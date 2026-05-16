@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Mobile Launcher</title>
+
+<link rel="manifest" href="manifest.json">
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #e6e6e6;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    background: #d0d0d0;
+    padding: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+details {
+    margin: 10px;
+    background: #f4f4f4;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+summary {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.item img {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    background: white;
+    border-radius: 14px;
+}
+
+.hidden {
+    display: none !important;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<input id="search" placeholder="Search...">
+</header>
+
+<!-- ========== NEWS ========== -->
+<details open>
+<summary>News</summary>
+<div class="grid">
+
+<div class="item" data-search="local news server">
+<a href="http://192.168.129.34:8280"><img src="https://drive.google.com/thumbnail?id=17kM2vS8AOGcyk6N6cKPuEtODqXnW8zdQ"></a>
+</div>
+
+<div class="item" data-search="rtbf info belgium news">
+<a href="https://www.rtbf.be/info"><img src="https://drive.google.com/thumbnail?id=1-L5e49FbuBqenAc8UzSvzbOHNItXZiBW"></a>
+</div>
+
+<div class="item" data-search="lecho finance economy">
+<a href="https://www.lecho.be/"><img src="https://drive.google.com/thumbnail?id=1-M2ekhOxqGUoFuLfIHL5mQmkCienjW7k"></a>
+</div>
+
+<div class="item" data-search="football pro league">
+<a href="https://www.rtbf.be/sport/direct/football/pro-league/resultats"><img src="https://drive.google.com/thumbnail?id=1-QLS87IgRpwRz-NNEZtBoKI5QnSr8p87"></a>
+</div>
+
+</div>
+</details>
+
+<!-- ========== MOVIES ========== -->
+<details>
+<summary>Movies</summary>
+<div class="grid">
+
+<div class="item" data-search="imdb movies">
+<a href="https://www.imdb.com/"><img src="https://drive.google.com/thumbnail?id=1-gwAmCVQjatUaLQUhLC2bka04C4dW_aU"></a>
+</div>
+
+<div class="item" data-search="quai10 cinema">
+<a href="https://www.quai10.be/cinema"><img src="https://drive.google.com/thumbnail?id=1-rmzreSgGrM33PeGCE0w3b-SMK1lrXON"></a>
+</div>
+
+<div class="item" data-search="premiere films reviews">
+<a href="https://www.premiere.fr/"><img src="https://drive.google.com/thumbnail?id=1Xih4TGbcT8qccZA7apAyrYqFKnAd5qld"></a>
+</div>
+
+</div>
+</details>
+
+<!-- ========== DICTIONARY ========== -->
+<details>
+<summary>Dictionaries</summary>
+<div class="grid">
+
+<div class="item" data-search="academie dictionary french">
+<a href="https://www.dictionnaire-academie.fr/"><img src="https://drive.google.com/thumbnail?id=10MvHod0Oo8reIOcPbMKw7nOC9ZkfpPrn"></a>
+</div>
+
+<div class="item" data-search="merriam webster english">
+<a href="https://www.merriam-webster.com/"><img src="https://drive.google.com/thumbnail?id=10MlAOQ0SLR4jO5pbn-QII8FT3XiR_pi0"></a>
+</div>
+
+<div class="item" data-search="deepl translate language">
+<a href="https://www.deepl.com/en/translator"><img src="https://drive.google.com/thumbnail?id=10RXsUAK0LG539qUHansqEbT4oaSOQ4me"></a>
+</div>
+
+</div>
+</details>
+
+<!-- ========== STORES ========== -->
+<details>
+<summary>Stores</summary>
+<div class="grid">
+
+<div class="item" data-search="amazon belgium shop">
+<a href="https://www.amazon.com.be/?language=fr_BE"><img src="https://drive.google.com/thumbnail?id=12mMA7w9elt-pUX0GlsGzz5BiyGOgJJgo"></a>
+</div>
+
+<div class="item" data-search="thomann music gear">
+<a href="https://www.thomann.de/be/index.html"><img src="https://drive.google.com/thumbnail?id=1-_xth9BNGo3AzctJ6NEJylk2m4Nxk0kw"></a>
+</div>
+
+<div class="item" data-search="play store apps">
+<a href="https://play.google.com/store"><img src="https://drive.google.com/thumbnail?id=1F1zVgqntwarIscElj9vdjMqrsUD803cp"></a>
+</div>
+
+<div class="item" data-search="fdroid open source">
+<a href="https://f-droid.org"><img src="https://drive.google.com/thumbnail?id=1oqLE7TthN057kl_GPpH0vCFR6KozRMFQ"></a>
+</div>
+
+</div>
+</details>
+
+<!-- ========== AI ========== -->
+<details>
+<summary>AI Tools</summary>
+<div class="grid">
+
+<div class="item" data-search="gemini google ai">
+<a href="https://gemini.google.com/"><img src="https://drive.google.com/thumbnail?id=1WMxKdfRnlLkbcQ1tJZfui3cyrDniwrat"></a>
+</div>
+
+<div class="item" data-search="chatgpt openai">
+<a href="https://chatgpt.com/"><img src="https://drive.google.com/thumbnail?id=1-BBPmV52Wx-S5Lpkp-rLR_5W5qOjVqzr"></a>
+</div>
+
+<div class="item" data-search="copilot microsoft ai">
+<a href="https://copilot.microsoft.com/"><img src="https://drive.google.com/thumbnail?id=1-8bezAHrJnrXppzioftvKXvO_twln3b8"></a>
+</div>
+
+</div>
+</details>
+
+<script>
+// SEARCH (PWA SAFE)
+const input = document.getElementById("search");
+
+input.addEventListener("input", () => {
+    const q = input.value.toLowerCase().trim();
+
+    document.querySelectorAll(".item").forEach(el => {
+        const s = el.getAttribute("data-search") || "";
+        el.style.display = s.includes(q) ? "" : "none";
+    });
+});
+
+// SERVICE WORKER
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js");
+}
+</script>
+
+</body>
+</html>
