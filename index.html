@@ -227,6 +227,12 @@ summary {
 </a>
 </div>
 
+<div class="item" data-search="Namecheap domain">
+<a href="https://ap.www.namecheap.com/domains/domaincontrolpanel/randdom.org/domain">
+<img src="icons/namecheap.png">
+</a>
+</div>
+
 <div class="item" data-search="immich photos server">
 <a href="http://immich.randdom.org/">
 <img src="icons/immich-logo.png">
@@ -268,13 +274,7 @@ summary {
 <div class="item" data-search="spotify music streaming">
 <a href="https://open.spotify.com/"
 onclick="window.location='https://play.google.com/store/apps/details?id=com.spotify.music'">
-<img src="https://drive.google.com/thumbnail?id=1ae3CQGBO6X-hN2s1A3ijL4P75HK_t_dc">
-</a>
-</div>
-
-<div class="item" data-search="Namecheap domain">
-<a href="https://ap.www.namecheap.com/domains/domaincontrolpanel/randdom.org/domain">
-<img src="icons/namecheap.png">
+<img src="icons/spotify.webp">
 </a>
 </div>
 
@@ -313,42 +313,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<script>
-const CACHE_NAME = "launcher-v2";
-
-const FILES_TO_CACHE = [
-  "./",
-  "./index.html",
-  "./manifest.json",
-  "./icon.png",
-
-  "./icons/spotify.png",
-  "./icons/rtbf.png",
-  "./icons/imdb.png",
-  "./icons/chatgpt.png"
-  // add ALL icons here
-];
-
-self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(FILES_TO_CACHE))
-  );
-
-  self.skipWaiting();
-});
-
-self.addEventListener("activate", event => {
-  event.waitUntil(clients.claim());
-});
-
-self.addEventListener("fetch", event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => response || fetch(event.request))
-  );
-});
-</script>
 
 </body>
 </html>

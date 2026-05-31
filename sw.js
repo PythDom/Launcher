@@ -1,19 +1,78 @@
-const CACHE = "launcher-cache-v1";
+const CACHE_NAME = "launcher-v3";
 
-const FILES = [
+const FILES_TO_CACHE = [
+
   "./",
   "./index.html",
-  "./manifest.json"
+  "./manifest.json",
+
+  "./icons/ttrss.png",
+  "./icons/RTBF.png",
+  "./icons/lecho.png",
+  "./icons/RTBF - Scores.png",
+
+  "./icons/imdb-icon.png",
+  "./icons/Quai10.png",
+  "./icons/premiere.png",
+
+  "./icons/Dico academie fr.png",
+  "./icons/merriam-webster150x150.png",
+  "./icons/deepL.png",
+
+  "./icons/Amazon-150x150.png",
+  "./icons/Thomann.png",
+  "./icons/google-play-store-app.jpg",
+  "./icons/f-droid_logo.png",
+
+  "./icons/Gemini_language_model_logo.png",
+  "./icons/ChatGPT.png",
+  "./icons/copilot-logo_0.png",
+
+  "./icons/santander-bank-logo-rounded-square-icon-free-png.webp",
+  "./icons/SNCB_logo.svg.png",
+  "./icons/namecheap.png",
+  "./icons/immich-logo.png",
+  "./icons/Kitchenowl.png",
+  "./icons/navidrome.webp",
+  "./icons/payscap.jpg",
+
+  "./icons/Linkedin.png",
+  "./icons/spotify.webp",
+  "./icons/Whatsapp.jpg",
+  "./icons/fortis.webp"
 ];
 
-self.addEventListener("install", e => {
-  e.waitUntil(
-    caches.open(CACHE).then(cache => cache.addAll(FILES))
+self.addEventListener("install", event => {
+
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(FILES_TO_CACHE))
+  );
+
+  self.skipWaiting();
+});
+
+self.addEventListener("activate", event => {
+
+  event.waitUntil(
+    clients.claim()
   );
 });
 
-self.addEventListener("fetch", e => {
-  e.respondWith(
-    caches.match(e.request).then(res => res || fetch(e.request))
+self.addEventListener("fetch", event => {
+
+  event.respondWith(
+
+    caches.match(event.request)
+
+      .then(response => {
+
+        if (response) return response;
+
+        return fetch(event.request);
+
+      })
+
   );
+
 });
