@@ -5,6 +5,8 @@ const FILES_TO_CACHE = [
   "./",
   "./index.html",
   "./manifest.json",
+  "./sw.js",
+  "./icon.png",
 
   "./icons/ttrss.png",
   "./icons/RTBF.png",
@@ -41,15 +43,17 @@ const FILES_TO_CACHE = [
   "./icons/Whatsapp.jpg",
   "./icons/fortis.webp"
 ];
-
 self.addEventListener("install", event => {
+
+  console.log("SW install");
 
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(FILES_TO_CACHE))
+      .then(() => self.skipWaiting())
+      .catch(err => console.error("Cache failed", err))
   );
 
-  self.skipWaiting();
 });
 
 self.addEventListener("activate", event => {
@@ -61,18 +65,19 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("fetch", event => {
 
+  if (event.request.mode === "navigate") {
+
+event.respondWith(
+  fetch(event.request).catch(() =>
+    caches.match("./index.html")
+  )
+);
+    return;
+  }
+
   event.respondWith(
-
     caches.match(event.request)
-
-      .then(response => {
-
-        if (response) return response;
-
-        return fetch(event.request);
-
-      })
-
+      .then(response => response || fetch(event.request))
   );
 
 });
