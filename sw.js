@@ -1,7 +1,6 @@
-const CACHE_NAME = "launcher-v3";
+const CACHE_NAME = "launcher-v4";
 
 const FILES_TO_CACHE = [
-
   "./",
   "./index.html",
   "./manifest.json",
@@ -43,41 +42,79 @@ const FILES_TO_CACHE = [
   "./icons/Whatsapp.jpg",
   "./icons/fortis.webp"
 ];
+
+// INSTALL
 self.addEventListener("install", event => {
 
-  console.log("SW install");
-
   event.waitUntil(
+
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(FILES_TO_CACHE))
       .then(() => self.skipWaiting())
-      .catch(err => console.error("Cache failed", err))
+
   );
 
 });
 
+// ACTIVATE
 self.addEventListener("activate", event => {
 
   event.waitUntil(
-    clients.claim()
+
+    caches.keys().then(keys => {
+
+      return Promise.all(
+
+        keys
+          .filter(key => key !== CACHE_NAME)
+          .map(key => caches.delete(key))
+
+      );
+
+    })
+
   );
+
+  self.clients.claim();
+
 });
 
+// FETCH (CACHE FIRST)
 self.addEventListener("fetch", event => {
 
-  if (event.request.mode === "navigate") {
-
-event.respondWith(
-  fetch(event.request).catch(() =>
-    caches.match("./index.html")
-  )
-);
-    return;
-  }
-
   event.respondWith(
+
     caches.match(event.request)
-      .then(response => response || fetch(event.request))
+      .then(cached => {
+
+        if (cached) {
+          return cached;
+        }
+
+        return fetch(event.request)
+          .then(response => {
+
+            // Cache successful GET requests
+            if (
+              event.request.method === "GET" &&
+              response.status === 200
+            ) {
+
+              const responseClone = response.clone();
+
+              caches.open(CACHE_NAME)
+                .then(cache => {
+                  cache.put(event.request, responseClone);
+                });
+
+            }
+
+            return response;
+
+          });
+
+      })
+
   );
 
 });
