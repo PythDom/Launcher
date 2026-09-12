@@ -283,7 +283,17 @@
       "id": "id-mtyg4s5fp99ip",
       "name": "Music",
       "open": true,
-      "items": []
+      "items": [
+        {
+          "id": "id-mtyg87gxceci7",
+          "name": "Tuner",
+          "type": "app",
+          "tags": "tuner",
+          "package": "com.tuner",
+          "fallbackUrl": "https://play.google.com/store/apps/details?id=com.tuner",
+          "icon": "icons/id-mtyg87gxceci7.png"
+        }
+      ]
     }
   ]
 }
