@@ -229,6 +229,30 @@ summary {
     color: var(--text);
 }
 
+.picker-results {
+    display: none;
+    max-height: 160px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-top: 4px;
+    background: var(--tile-bg);
+}
+.picker-results.show { display: block; }
+.picker-item {
+    padding: 9px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+}
+.picker-item:last-child { border-bottom: none; }
+.picker-item:active { background: var(--bg); }
+.picker-empty {
+    padding: 9px 10px;
+    font-size: 13px;
+    color: var(--muted);
+}
+
 .icon-preview {
     margin-top: 10px;
     text-align: center;
@@ -333,6 +357,10 @@ summary {
     </div>
 
     <div id="f-app-fields" style="display:none">
+      <label>Quick pick a common app (optional)
+        <input id="f-app-picker" type="text" placeholder="Search e.g. WhatsApp, Netflix, Gmail…" autocomplete="off">
+      </label>
+      <div id="f-app-picker-results" class="picker-results"></div>
       <label>Package name
         <input id="f-package" type="text" placeholder="com.whatsapp">
       </label>
