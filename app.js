@@ -14,6 +14,63 @@ const SHA_KEY = "portalDataSha";
 // fail on a first-ever load (e.g. first visit happens offline).
 const FALLBACK_DATA = { categories: [{ id: "start", name: "Get Started", open: true, items: [] }] };
 
+// A web page has no way to read the list of apps actually installed on the
+// phone (no browser exposes that, for privacy reasons) — this is a curated
+// list of common package names offered as a quick-pick shortcut instead of
+// manual typing. Anything not listed can still be entered by hand.
+const POPULAR_APPS = [
+    { name: "WhatsApp", package: "com.whatsapp" },
+    { name: "Messenger", package: "com.facebook.orca" },
+    { name: "Instagram", package: "com.instagram.android" },
+    { name: "Facebook", package: "com.facebook.katana" },
+    { name: "Telegram", package: "org.telegram.messenger" },
+    { name: "Signal", package: "org.thoughtcrime.securesms" },
+    { name: "Snapchat", package: "com.snapchat.android" },
+    { name: "Twitter / X", package: "com.twitter.android" },
+    { name: "Discord", package: "com.discord" },
+    { name: "TikTok", package: "com.zhiliaoapp.musically" },
+    { name: "LinkedIn", package: "com.linkedin.android" },
+    { name: "Slack", package: "com.Slack" },
+    { name: "Microsoft Teams", package: "com.microsoft.teams" },
+    { name: "Viber", package: "com.viber.voip" },
+    { name: "Skype", package: "com.skype.raider" },
+    { name: "Gmail", package: "com.google.android.gm" },
+    { name: "Google Maps", package: "com.google.android.apps.maps" },
+    { name: "Google Photos", package: "com.google.android.apps.photos" },
+    { name: "Google Drive", package: "com.google.android.apps.docs" },
+    { name: "YouTube", package: "com.google.android.youtube" },
+    { name: "YouTube Music", package: "com.google.android.apps.youtube.music" },
+    { name: "Chrome", package: "com.android.chrome" },
+    { name: "Google Calendar", package: "com.google.android.calendar" },
+    { name: "Google Keep", package: "com.google.android.keep" },
+    { name: "Google Authenticator", package: "com.google.android.apps.authenticator2" },
+    { name: "Spotify", package: "com.spotify.music" },
+    { name: "Netflix", package: "com.netflix.mediaclient" },
+    { name: "Disney+", package: "com.disney.disneyplus" },
+    { name: "Amazon Prime Video", package: "com.amazon.avod.thirdpartyclient" },
+    { name: "VLC", package: "org.videolan.vlc" },
+    { name: "Audible", package: "com.audible.application" },
+    { name: "Kindle", package: "com.amazon.kindle" },
+    { name: "PayPal", package: "com.paypal.android.p2pmobile" },
+    { name: "Revolut", package: "com.revolut.revolut" },
+    { name: "N26", package: "de.number26.android" },
+    { name: "Wise", package: "com.transferwise.android" },
+    { name: "Amazon Shopping", package: "com.amazon.mShop.android.shopping" },
+    { name: "eBay", package: "com.ebay.mobile" },
+    { name: "Uber", package: "com.ubercab" },
+    { name: "Bolt", package: "ee.mtakso.client" },
+    { name: "Waze", package: "com.waze" },
+    { name: "Booking.com", package: "com.booking" },
+    { name: "Airbnb", package: "com.airbnb.android" },
+    { name: "Microsoft Outlook", package: "com.microsoft.office.outlook" },
+    { name: "Zoom", package: "us.zoom.videomeetings" },
+    { name: "Notion", package: "notion.id" },
+    { name: "Todoist", package: "com.todoist" },
+    { name: "Duolingo", package: "com.duolingo" },
+    { name: "Google Play Store", package: "com.android.vending" },
+    { name: "F-Droid", package: "org.fdroid.fdroid" }
+];
+
 let shortcutsData = null;
 let lastKnownSha = localStorage.getItem(SHA_KEY) || null;
 let editMode = false;
@@ -288,6 +345,34 @@ function setTypeFieldsVisibility(type) {
     document.getElementById("f-app-fields").style.display = type === "app" ? "block" : "none";
 }
 
+function renderAppPickerResults(query) {
+    const box = document.getElementById("f-app-picker-results");
+    const q = query.trim().toLowerCase();
+    if (!q) { box.innerHTML = ""; box.classList.remove("show"); return; }
+    const matches = POPULAR_APPS.filter((a) =>
+        a.name.toLowerCase().includes(q) || a.package.toLowerCase().includes(q)
+    ).slice(0, 8);
+    if (!matches.length) { box.innerHTML = '<div class="picker-empty">No match — type the package name manually below.</div>'; box.classList.add("show"); return; }
+    box.innerHTML = "";
+    matches.forEach((a) => {
+        const row = document.createElement("div");
+        row.className = "picker-item";
+        row.textContent = a.name + " — " + a.package;
+        row.onclick = () => {
+            document.getElementById("f-package").value = a.package;
+            document.getElementById("f-package").dispatchEvent(new Event("input"));
+            if (!document.getElementById("f-name").value.trim()) {
+                document.getElementById("f-name").value = a.name;
+            }
+            document.getElementById("f-app-picker").value = "";
+            box.innerHTML = "";
+            box.classList.remove("show");
+        };
+        box.appendChild(row);
+    });
+    box.classList.add("show");
+}
+
 function openItemModal(catId, itemId) {
     currentEditItemId = itemId;
     pendingIconData = null;
@@ -296,6 +381,9 @@ function openItemModal(catId, itemId) {
     populateCategorySelect(catId);
     document.getElementById("f-icon-file").value = "";
     document.getElementById("f-fallback").dataset.userEdited = "";
+    document.getElementById("f-app-picker").value = "";
+    document.getElementById("f-app-picker-results").innerHTML = "";
+    document.getElementById("f-app-picker-results").classList.remove("show");
     const saveBtn = document.getElementById("f-save");
     saveBtn.disabled = false;
     saveBtn.textContent = "Save";
@@ -629,6 +717,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     document.getElementById("f-type").addEventListener("change", (e) => setTypeFieldsVisibility(e.target.value));
+    document.getElementById("f-app-picker").addEventListener("input", (e) => renderAppPickerResults(e.target.value));
     document.getElementById("f-package").addEventListener("input", (e) => {
         const fb = document.getElementById("f-fallback");
         if (!fb.dataset.userEdited) {
