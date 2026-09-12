@@ -3,42 +3,138 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<meta name="theme-color" content="#d0d0d0">
 <title>Mobile Shortcuts</title>
-
 <link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
 
 <style>
+:root {
+    --bg: #e6e6e6;
+    --header-bg: #d0d0d0;
+    --card-bg: #f4f4f4;
+    --tile-bg: #ffffff;
+    --text: #111111;
+    --muted: #666666;
+    --accent: #1a73e8;
+    --danger: #d93025;
+    --border: rgba(0,0,0,0.15);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #121212;
+        --header-bg: #1e1e1e;
+        --card-bg: #1f1f1f;
+        --tile-bg: #2a2a2a;
+        --text: #eeeeee;
+        --muted: #aaaaaa;
+        --accent: #8ab4f8;
+        --danger: #f28b82;
+        --border: rgba(255,255,255,0.15);
+    }
+}
+
+* { box-sizing: border-box; }
+
 body {
     margin: 0;
-    font-family: Arial;
-    background: #e6e6e6;
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding-bottom: 40px;
 }
 
 header {
     position: sticky;
     top: 0;
-    background: #d0d0d0;
+    background: var(--header-bg);
     padding: 10px;
+    z-index: 10;
+    display: flex;
+    gap: 8px;
+    align-items: center;
 }
 
-input {
-    width: 100%;
+#search {
+    flex: 1;
     padding: 10px;
     font-size: 16px;
     box-sizing: border-box;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--tile-bg);
+    color: var(--text);
+}
+
+#editToggle {
+    padding: 10px 14px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--tile-bg);
+    color: var(--text);
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.status-synced { background: #34a853; }
+.status-dirty { background: #f9ab00; }
+.status-syncing { background: #1a73e8; animation: pulse 1s infinite; }
+.status-offline { background: #9aa0a6; }
+.status-offline-dirty { background: #d93025; }
+@keyframes pulse { 50% { opacity: 0.3; } }
+
+#toolbar {
+    display: none;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
+    background: var(--header-bg);
+}
+
+#toolbar button {
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--tile-bg);
+    color: var(--text);
 }
 
 details {
     margin: 10px;
-    background: #f4f4f4;
-    padding: 10px;
+    background: var(--card-bg);
     border-radius: 10px;
+    padding: 8px;
 }
 
 summary {
     font-size: 20px;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.cat-controls {
+    font-size: 14px;
+    font-weight: normal;
+    display: flex;
+    gap: 4px;
+}
+
+.cat-controls button {
+    border: none;
+    background: var(--tile-bg);
+    border-radius: 6px;
+    padding: 4px 6px;
+    font-size: 13px;
 }
 
 .grid {
@@ -48,273 +144,244 @@ summary {
     margin-top: 10px;
 }
 
+.item {
+    text-align: center;
+    cursor: pointer;
+}
+
 .item img {
     width: 75px;
     height: 75px;
     object-fit: contain;
     background: white;
     border-radius: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
 }
 
-.hidden {
-    display: none !important;
+.item-label {
+    font-size: 11px;
+    margin-top: 4px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
+.item.editing img {
+    outline: 2px dashed var(--accent);
+    outline-offset: 2px;
+}
+
+.add-tile .add-plus {
+    width: 75px;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    color: var(--muted);
+    border: 2px dashed var(--border);
+    border-radius: 14px;
+    margin: 0 auto;
+}
+
+.hidden { display: none !important; }
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 100;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px 12px;
+    overflow-y: auto;
+}
+.modal-overlay.open { display: flex; }
+
+.modal {
+    background: var(--card-bg);
+    color: var(--text);
+    border-radius: 12px;
+    padding: 16px;
+    width: 100%;
+    max-width: 420px;
+}
+
+.modal h3 { margin-top: 0; }
+
+.modal label {
+    display: block;
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 10px;
+}
+
+.modal input, .modal select {
+    width: 100%;
+    padding: 8px;
+    font-size: 15px;
+    margin-top: 4px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--tile-bg);
+    color: var(--text);
+}
+
+.icon-preview {
+    margin-top: 10px;
+    text-align: center;
+}
+.icon-preview img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    background: white;
+    border-radius: 12px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+}
+
+.modal-buttons button {
+    padding: 9px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--tile-bg);
+    color: var(--text);
+    font-size: 14px;
+}
+
+.btn-primary { background: var(--accent) !important; color: white !important; border: none !important; }
+.btn-danger { background: var(--danger) !important; color: white !important; border: none !important; margin-right: auto; }
+
+#settingsStatus { font-size: 13px; margin-top: 8px; color: var(--muted); }
+
+#toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 200;
+    max-width: 90%;
+    text-align: center;
+}
+#toast.show { opacity: 1; }
 </style>
 </head>
 
 <body>
 
 <header>
+<div id="statusDot" class="status-dot status-offline" title="Loading…"></div>
 <input id="search" placeholder="Search shortcuts...">
+<button id="editToggle">✏️ Edit</button>
 </header>
 
-<!-- ================= NEWS ================= -->
-<details open>
-<summary>News</summary>
-<div class="grid">
-
-<div class="item" data-search="local server news">
-<a href="http://192.168.129.34:8280">
-<img src="icons/ttrss.png">
-</a>
+<div id="toolbar">
+<button id="btnAddCategory">+ Category</button>
+<button id="btnSyncNow">🔄 Sync now</button>
+<button id="btnSettings">⚙ Settings</button>
+<button id="btnExport">⬇ Export backup</button>
+<button id="btnImport">⬆ Restore backup</button>
+<button id="btnDiscard">↺ Undo local changes</button>
 </div>
 
-<div class="item" data-search="rtbf info belgium news">
-<a href="https://www.rtbf.be/info">
-<img src="icons/RTBF.png">
-</a>
+<input type="file" id="importFileInput" accept="application/json" class="hidden">
+
+<main id="categories"></main>
+
+<div id="toast"></div>
+
+<div id="itemModal" class="modal-overlay">
+  <div class="modal">
+    <h3 id="itemModalTitle">Add Shortcut</h3>
+
+    <label>Name
+      <input id="f-name" type="text" placeholder="e.g. WhatsApp">
+    </label>
+
+    <label>Category
+      <select id="f-category"></select>
+    </label>
+
+    <label>Type
+      <select id="f-type">
+        <option value="link">Website / Link</option>
+        <option value="app">Android App (by package name)</option>
+      </select>
+    </label>
+
+    <div id="f-link-fields">
+      <label>URL
+        <input id="f-url" type="text" placeholder="https://example.com">
+      </label>
+    </div>
+
+    <div id="f-app-fields" style="display:none">
+      <label>Package name
+        <input id="f-package" type="text" placeholder="com.whatsapp">
+      </label>
+      <label>Fallback URL (used if the app isn't installed — defaults to its Play Store page)
+        <input id="f-fallback" type="text" placeholder="https://play.google.com/store/apps/details?id=...">
+      </label>
+    </div>
+
+    <label>Icon URL
+      <input id="f-icon-url" type="text" placeholder="icons/whatsapp.png, https://..., or a Drive share link">
+    </label>
+    <label>Or upload an icon image
+      <input id="f-icon-file" type="file" accept="image/*">
+    </label>
+    <div class="icon-preview"><img id="f-icon-preview"></div>
+
+    <div class="modal-buttons">
+      <button id="f-delete" class="btn-danger">Delete</button>
+      <button id="f-cancel">Cancel</button>
+      <button id="f-save" class="btn-primary">Save</button>
+    </div>
+  </div>
 </div>
 
-<div class="item" data-search="lecho economy finance belgium">
-<a href="https://www.lecho.be/">
-<img src="icons/lecho.png">
-</a>
+<div id="settingsModal" class="modal-overlay">
+  <div class="modal">
+    <h3>Settings</h3>
+    <p style="font-size:13px;color:var(--muted)">
+      Linked repo: <strong id="settingsRepoLabel"></strong>
+    </p>
+    <label>GitHub token (fine-grained, Contents: Read and write on this repo only)
+      <input id="f-token" type="password" placeholder="github_pat_...">
+    </label>
+    <p style="font-size:12px;color:var(--muted)">
+      Stored only in this browser's local storage on this device. Used to save your edits back to the repo
+      so they show up everywhere. Generate one at github.com → Settings → Developer settings →
+      Personal access tokens → Fine-grained tokens.
+    </p>
+    <div id="settingsStatus"></div>
+    <div class="modal-buttons">
+      <button id="btnClearToken" class="btn-danger">Clear token</button>
+      <button id="btnTestConnection">Test connection</button>
+      <button id="btnCloseSettings">Close</button>
+      <button id="btnSaveToken" class="btn-primary">Save</button>
+    </div>
+  </div>
 </div>
 
-<div class="item" data-search="football pro league results">
-<a href="https://www.rtbf.be/sport/direct/football/pro-league/resultats">
-<img src="icons/RTBF - Scores.png">
-</a>
-</div>
-
-</div>
-</details>
-
-<!-- ================= MOVIES ================= -->
-<details open>
-<summary>Movies</summary>
-<div class="grid">
-
-<div class="item" data-search="imdb movies cinema">
-<a href="https://www.imdb.com/">
-<img src="icons/imdb-icon.png">
-</a>
-</div>
-
-<div class="item" data-search="quai10 cinema belgium">
-<a href="https://www.quai10.be/cinema">
-<img src="icons/Quai10.png">
-</a>
-</div>
-
-<div class="item" data-search="premiere films reviews">
-<a href="https://www.premiere.fr/">
-<img src="icons/premiere.png">
-</a>
-</div>
-
-</div>
-</details>
-
-<!-- ================= DICTIONARY ================= -->
-<details>
-<summary>Dictionaries</summary>
-<div class="grid">
-
-<div class="item" data-search="academie francaise dictionary">
-<a href="https://www.dictionnaire-academie.fr/">
-<img src="icons/Dico academie fr.png">
-</a>
-</div>
-
-<div class="item" data-search="merriam webster english dictionary">
-<a href="https://www.merriam-webster.com/">
-<img src="icons/merriam-webster150x150.png">
-</a>
-</div>
-
-<div class="item" data-search="deepl translate language">
-<a href="https://www.deepl.com/en/translator">
-<img src="icons/deepL.png">
-</a>
-</div>
-
-</div>
-</details>
-
-<!-- ================= STORES ================= -->
-<details>
-<summary>Online Stores</summary>
-<div class="grid">
-
-<div class="item" data-search="amazon belgium shop">
-<a href="https://www.amazon.com.be/?language=fr_BE">
-<img src="icons/Amazon-150x150.png">
-</a>
-</div>
-
-<div class="item" data-search="thomann music instruments">
-<a href="https://www.thomann.de/be/index.html">
-<img src="icons/Thomann.png">
-</a>
-</div>
-
-<div class="item" data-search="play store android apps">
-<a href="https://play.google.com/store">
-<img src="icons/google-play-store-app.jpg">
-</a>
-</div>
-
-<div class="item" data-search="fdroid open source apps">
-<a href="https://f-droid.org">
-<img src="icons/f-droid_logo.png">
-</a>
-</div>
-
-</div>
-</details>
-
-<!-- ================= AI ================= -->
-<details>
-<summary>Search & AI</summary>
-<div class="grid">
-
-<div class="item" data-search="gemini google ai">
-<a href="https://gemini.google.com/">
-<img src="icons/Gemini_language_model_logo.png">
-</a>
-</div>
-
-<div class="item" data-search="chatgpt openai">
-<a href="https://chatgpt.com/">
-<img src="icons/ChatGPT.png">
-</a>
-</div>
-
-<div class="item" data-search="copilot microsoft ai">
-<a href="https://copilot.microsoft.com/">
-<img src="icons/copilot-logo_0.png">
-</a>
-</div>
-
-</div>
-</details>
-
-<!-- ================= USEFUL LINKS ================= -->
-<details>
-<summary>Useful Links</summary>
-<div class="grid">
-
-<div class="item" data-search="santander banking login">
-<a href="https://secure.santanderconsumerbank.be/mdib-santander/session">
-<img src="icons/santander-bank-logo-rounded-square-icon-free-png.webp">
-</a>
-</div>
-
-<div class="item" data-search="belgian train sncb">
-<a href="https://www.belgiantrain.be/en">
-<img src="icons/SNCB_logo.svg.png">
-</a>
-</div>
-
-<div class="item" data-search="Namecheap domain">
-<a href="https://ap.www.namecheap.com/domains/domaincontrolpanel/randdom.org/domain">
-<img src="icons/namecheap.png">
-</a>
-</div>
-
-<div class="item" data-search="immich photos server">
-<a href="http://immich.randdom.org/">
-<img src="icons/immich-logo.png">
-</a>
-</div>
-
-<div class="item" data-search="recipes cooking">
-<a href="http://recettes.randdom.org/">
-<img src="icons/Kitchenowl.png">
-</a>
-</div>
-
-<div class="item" data-search="music server">
-<a href="http://music.randdom.org/">
-<img src="icons/navidrome.webp">
-</a>
-</div>
-
-<div class="item" data-search="payscap dashboard">
-<a href="http://payscap.randdom.org/">
-<img src="icons/payscap.jpg">
-</a>
-</div>
-
-</div>
-</details>
-
-<!-- ================= APPS ================= -->
-<details>
-<summary>Apps</summary>
-<div class="grid">
-
-<div class="item" data-search="linkedin social jobs">
-<a href="https://www.linkedin.com/">
-<img src="icons/Linkedin.png">
-</a>
-</div>
-
-<div class="item" data-search="spotify music streaming">
-<a href="https://open.spotify.com/"
-onclick="window.location='https://play.google.com/store/apps/details?id=com.spotify.music'">
-<img src="icons/spotify.webp">
-</a>
-</div>
-
-<div class="item" data-search="whatsapp chat messages">
-<a href="https://wa.me/"
-onclick="window.location='https://play.google.com/store/apps/details?id=com.whatsapp'">
-<img src="icons/Whatsapp.jpg">
-</a>
-</div>
-
-<div class="item" data-search="easy banking finance app">
-<a href="https://play.google.com/store/apps/details?id=com.bnpp.easybanking">
-<img src="icons/fortis.webp">
-</a>
-</div>
-
-</div>
-</details>
-
-<script>
-// SEARCH (PWA SAFE + RELIABLE)
-const input = document.getElementById("search");
-
-input.addEventListener("input", () => {
-    const q = input.value.toLowerCase().trim();
-
-    document.querySelectorAll(".item").forEach(el => {
-        const s = el.getAttribute("data-search") || "";
-        el.style.display = s.includes(q) ? "" : "none";
-    });
-});
-
-// SERVICE WORKER
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("./sw.js")
-    .then(reg => console.log("SW registered", reg))
-    .catch(err => console.error("SW registration failed", err));
-}
-</script>
-
+<script src="app.js" defer></script>
 
 </body>
 </html>
