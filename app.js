@@ -78,6 +78,8 @@ let editMode = false;
 let currentEditItemId = null;
 let syncTimer = null;
 let syncing = false;
+let lastSyncAt = 0;
+const MIN_SYNC_INTERVAL_MS = 15000;
 
 // ---------- data load ----------
 
@@ -186,9 +188,14 @@ function render() {
     shortcutsData.categories.forEach((cat, ci) => {
         const details = document.createElement("details");
         details.open = cat.open !== false;
+        // Note: setting .open programmatically can itself fire a "toggle"
+        // event in current browsers. Update the in-memory state so the UI
+        // stays consistent, but do NOT persist/sync from this listener —
+        // doing so previously caused an infinite render -> toggle -> sync
+        // -> render loop that repeatedly overwrote real data with stale
+        // copies. Open/closed section state is intentionally session-only.
         details.addEventListener("toggle", () => {
             cat.open = details.open;
-            saveDraft();
         });
 
         const summary = document.createElement("summary");
@@ -597,7 +604,12 @@ async function syncToGitHub(silent) {
         return;
     }
     if (syncing) return;
+    if (Date.now() - lastSyncAt < MIN_SYNC_INTERVAL_MS) {
+        console.warn("Sync rate-limited — too soon since last sync.");
+        return;
+    }
     syncing = true;
+    lastSyncAt = Date.now();
     updateStatus("syncing");
     try {
         await uploadPendingIcons();
@@ -608,7 +620,6 @@ async function syncToGitHub(silent) {
         lastKnownSha = result.content.sha;
         localStorage.setItem(SHA_KEY, lastKnownSha);
         saveDraft(false);
-        render();
         toast("Synced to GitHub ✓");
     } catch (err) {
         console.error(err);
