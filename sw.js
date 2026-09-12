@@ -1,4 +1,4 @@
-const CACHE_NAME = "launcher-v5";
+const CACHE_NAME = "launcher-v6";
 
 const FILES_TO_CACHE = [
   "./",
