@@ -1,4 +1,4 @@
-const CACHE_NAME = "launcher-v7";
+const CACHE_NAME = "launcher-v8";
 
 const FILES_TO_CACHE = [
   "./",
@@ -42,7 +42,13 @@ const FILES_TO_CACHE = [
   "./icons/Linkedin.png",
   "./icons/spotify.webp",
   "./icons/Whatsapp.jpg",
-  "./icons/fortis.webp"
+  "./icons/fortis.webp",
+
+  "./icons/id-mtyg87gxceci7.png",
+  "./icons/ultimate-guitar.png",
+  "./icons/boss-waza-air.png",
+  "./icons/fender-tone.png",
+  "./icons/bandlab.png"
 ];
 
 // INSTALL — precache the app shell, icons, and a baseline copy of the data
