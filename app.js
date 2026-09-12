@@ -169,6 +169,20 @@ function fileToIconDataURL(file, maxDim) {
 
 // ---------- href computation ----------
 
+function navigateTo(href) {
+    // Android's Chrome (including installed PWAs/WebAPKs) only reliably
+    // hands an intent:// URL off to the OS when it comes from a real <a>
+    // element being clicked — a script-driven location.href assignment is
+    // often silently ignored for intent:// (regular http(s) links work
+    // fine either way, but app shortcuts need the real-anchor path).
+    const a = document.createElement("a");
+    a.href = href;
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => a.remove(), 1000);
+}
+
 function computeHref(item) {
     if (item.type === "app") {
         const pkg = item.package || "";
@@ -277,7 +291,7 @@ function renderItem(catId, item) {
         if (editMode) {
             openItemModal(catId, item.id);
         } else {
-            location.href = computeHref(item);
+            navigateTo(computeHref(item));
         }
     };
     return div;
