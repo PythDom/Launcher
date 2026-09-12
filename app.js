@@ -269,6 +269,7 @@ function deleteCategory(catId) {
 // ---------- item modal ----------
 
 let pendingIconData = null;
+let iconProcessing = null;
 
 function populateCategorySelect(selectedId) {
     const sel = document.getElementById("f-category");
@@ -290,10 +291,14 @@ function setTypeFieldsVisibility(type) {
 function openItemModal(catId, itemId) {
     currentEditItemId = itemId;
     pendingIconData = null;
+    iconProcessing = null;
 
     populateCategorySelect(catId);
     document.getElementById("f-icon-file").value = "";
     document.getElementById("f-fallback").dataset.userEdited = "";
+    const saveBtn = document.getElementById("f-save");
+    saveBtn.disabled = false;
+    saveBtn.textContent = "Save";
 
     let item = null;
     if (itemId) {
@@ -327,7 +332,15 @@ function updateIconPreview(src) {
     img.src = src || placeholderIcon(document.getElementById("f-name").value);
 }
 
-function saveItemFromModal() {
+async function saveItemFromModal() {
+    if (iconProcessing) {
+        document.getElementById("f-save").disabled = true;
+        document.getElementById("f-save").textContent = "Processing icon…";
+        await iconProcessing;
+        document.getElementById("f-save").disabled = false;
+        document.getElementById("f-save").textContent = "Save";
+    }
+
     const catId = document.getElementById("f-category").value;
     const name = document.getElementById("f-name").value.trim();
     if (!name) { alert("Name is required."); return; }
@@ -466,7 +479,14 @@ async function uploadPendingIcons() {
                 if (!m) continue;
                 const ext = m[1].split("/")[1] === "jpeg" ? "jpg" : m[1].split("/")[1];
                 const path = "icons/" + item.id + "." + ext;
-                await ghPutFile(path, m[2], "Add icon for " + item.name, undefined);
+                let existingSha;
+                try {
+                    const existing = await ghGetFile(path);
+                    if (existing) existingSha = existing.sha;
+                } catch (e) {
+                    // couldn't check — attempt a plain create below
+                }
+                await ghPutFile(path, m[2], "Add icon for " + item.name, existingSha);
                 item.icon = path;
             }
         }
@@ -495,6 +515,7 @@ async function syncToGitHub(silent) {
         lastKnownSha = result.content.sha;
         localStorage.setItem(SHA_KEY, lastKnownSha);
         saveDraft(false);
+        render();
         toast("Synced to GitHub ✓");
     } catch (err) {
         console.error(err);
@@ -619,12 +640,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         pendingIconData = null;
         updateIconPreview(normalizeIconUrl(e.target.value.trim()));
     });
-    document.getElementById("f-icon-file").addEventListener("change", async (e) => {
+    document.getElementById("f-icon-file").addEventListener("change", (e) => {
         const file = e.target.files[0];
         if (!file) return;
-        pendingIconData = await fileToIconDataURL(file);
         document.getElementById("f-icon-url").value = "";
-        updateIconPreview(pendingIconData);
+        const saveBtn = document.getElementById("f-save");
+        saveBtn.disabled = true;
+        saveBtn.textContent = "Processing icon…";
+        iconProcessing = fileToIconDataURL(file).then((dataUrl) => {
+            pendingIconData = dataUrl;
+            updateIconPreview(pendingIconData);
+        }).finally(() => {
+            iconProcessing = null;
+            saveBtn.disabled = false;
+            saveBtn.textContent = "Save";
+        });
     });
 
     document.getElementById("f-save").addEventListener("click", saveItemFromModal);
