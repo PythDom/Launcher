@@ -5,6 +5,7 @@ const GITHUB_OWNER = "PythDom";
 const GITHUB_REPO = "Launcher";
 const DATA_PATH = "data/shortcuts.json";
 const API_BASE = "https://api.github.com/repos/" + GITHUB_OWNER + "/" + GITHUB_REPO + "/contents/";
+const PRODUCTION_HOST = "pythdom.github.io";
 
 const DRAFT_KEY = "portalDraft";
 const TOKEN_KEY = "portalToken";
@@ -583,6 +584,10 @@ async function uploadPendingIcons() {
 
 async function syncToGitHub(silent) {
     if (!isDirty()) return;
+    if (location.hostname !== PRODUCTION_HOST) {
+        console.warn("Sync to GitHub skipped: not running on " + PRODUCTION_HOST + " (host is " + location.hostname + ").");
+        return;
+    }
     if (!navigator.onLine) {
         if (!silent) toast("Offline — will sync automatically when you're back online.");
         return;
