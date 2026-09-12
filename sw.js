@@ -1,11 +1,13 @@
-const CACHE_NAME = "launcher-v4";
+const CACHE_NAME = "launcher-v5";
 
 const FILES_TO_CACHE = [
   "./",
   "./index.html",
+  "./app.js",
   "./manifest.json",
   "./sw.js",
   "./icon.png",
+  "./data/shortcuts.json",
 
   "./icons/ttrss.png",
   "./icons/RTBF.png",
@@ -43,78 +45,59 @@ const FILES_TO_CACHE = [
   "./icons/fortis.webp"
 ];
 
-// INSTALL
-self.addEventListener("install", event => {
-
+// INSTALL — precache the app shell, icons, and a baseline copy of the data
+// file so the app works fully offline from the very first load onward.
+self.addEventListener("install", (event) => {
   event.waitUntil(
-
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(FILES_TO_CACHE))
+      .then((cache) => cache.addAll(FILES_TO_CACHE))
       .then(() => self.skipWaiting())
-
   );
-
 });
 
-// ACTIVATE
-self.addEventListener("activate", event => {
-
+// ACTIVATE — drop old cache versions.
+self.addEventListener("activate", (event) => {
   event.waitUntil(
-
-    caches.keys().then(keys => {
-
-      return Promise.all(
-
-        keys
-          .filter(key => key !== CACHE_NAME)
-          .map(key => caches.delete(key))
-
-      );
-
-    })
-
+    caches.keys().then((keys) => Promise.all(
+      keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
+    ))
   );
-
   self.clients.claim();
-
 });
 
-// FETCH (CACHE FIRST)
-self.addEventListener("fetch", event => {
+// FETCH
+// data/shortcuts.json: network-first (so an online device always sees the
+// latest synced data), falling back to the cache when offline.
+// Everything else: cache-first, with any new same-origin file (e.g. a newly
+// added icon) picked up and cached automatically the first time it loads.
+self.addEventListener("fetch", (event) => {
+  const url = new URL(event.request.url);
+
+  if (url.pathname.endsWith("/data/shortcuts.json")) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response.status === 200) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
 
   event.respondWith(
-
-    caches.match(event.request)
-      .then(cached => {
-
-        if (cached) {
-          return cached;
+    caches.match(event.request).then((cached) => {
+      if (cached) return cached;
+      return fetch(event.request).then((response) => {
+        if (event.request.method === "GET" && response.status === 200) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
-
-        return fetch(event.request)
-          .then(response => {
-
-            // Cache successful GET requests
-            if (
-              event.request.method === "GET" &&
-              response.status === 200
-            ) {
-
-              const responseClone = response.clone();
-
-              caches.open(CACHE_NAME)
-                .then(cache => {
-                  cache.put(event.request, responseClone);
-                });
-
-            }
-
-            return response;
-
-          });
-
-      })
-
+        return response;
+      });
+    })
   );
-
 });
