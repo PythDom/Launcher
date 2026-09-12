@@ -5,10 +5,47 @@
       "name": "News",
       "open": true,
       "items": [
-        { "id": "news-1", "name": "Local IP News", "type": "link", "url": "http://192.168.129.34:8280", "icon": "icons/ttrss.png", "tags": "local server news" },
-        { "id": "news-2", "name": "RTBF Info", "type": "link", "url": "https://www.rtbf.be/info", "icon": "icons/RTBF.png", "tags": "rtbf info belgium news" },
-        { "id": "news-3", "name": "L'Echo", "type": "link", "url": "https://www.lecho.be/", "icon": "icons/lecho.png", "tags": "lecho economy finance belgium" },
-        { "id": "news-4", "name": "RTBF Sport", "type": "link", "url": "https://www.rtbf.be/sport/direct/football/pro-league/resultats", "icon": "icons/RTBF - Scores.png", "tags": "football pro league results" }
+        {
+          "id": "news-1",
+          "name": "Local IP News",
+          "type": "link",
+          "url": "http://192.168.129.34:8280",
+          "icon": "icons/ttrss.png",
+          "tags": "local server news"
+        },
+        {
+          "id": "news-2",
+          "name": "RTBF Info",
+          "type": "link",
+          "url": "https://www.rtbf.be/info",
+          "icon": "icons/RTBF.png",
+          "tags": "rtbf info belgium news"
+        },
+        {
+          "id": "news-3",
+          "name": "L'Echo",
+          "type": "link",
+          "url": "https://www.lecho.be/",
+          "icon": "icons/lecho.png",
+          "tags": "lecho economy finance belgium"
+        },
+        {
+          "id": "news-4",
+          "name": "RTBF Sport",
+          "type": "link",
+          "url": "https://www.rtbf.be/sport/direct/football/pro-league/resultats",
+          "icon": "icons/RTBF - Scores.png",
+          "tags": "football pro league results"
+        },
+        {
+          "id": "id-mtygt5z7huxgu",
+          "name": "Netflix",
+          "type": "app",
+          "tags": "netflix",
+          "package": "com.netflix.mediaclient",
+          "fallbackUrl": "https://play.google.com/store/apps/details?id=com.netflix.mediaclient",
+          "icon": ""
+        }
       ]
     },
     {
@@ -16,9 +53,30 @@
       "name": "Movies",
       "open": true,
       "items": [
-        { "id": "movies-1", "name": "IMDB", "type": "link", "url": "https://www.imdb.com/", "icon": "icons/imdb-icon.png", "tags": "imdb movies cinema" },
-        { "id": "movies-2", "name": "Quai10", "type": "link", "url": "https://www.quai10.be/cinema", "icon": "icons/Quai10.png", "tags": "quai10 cinema belgium" },
-        { "id": "movies-3", "name": "Premiere", "type": "link", "url": "https://www.premiere.fr/", "icon": "icons/premiere.png", "tags": "premiere films reviews" }
+        {
+          "id": "movies-1",
+          "name": "IMDB",
+          "type": "link",
+          "url": "https://www.imdb.com/",
+          "icon": "icons/imdb-icon.png",
+          "tags": "imdb movies cinema"
+        },
+        {
+          "id": "movies-2",
+          "name": "Quai10",
+          "type": "link",
+          "url": "https://www.quai10.be/cinema",
+          "icon": "icons/Quai10.png",
+          "tags": "quai10 cinema belgium"
+        },
+        {
+          "id": "movies-3",
+          "name": "Premiere",
+          "type": "link",
+          "url": "https://www.premiere.fr/",
+          "icon": "icons/premiere.png",
+          "tags": "premiere films reviews"
+        }
       ]
     },
     {
@@ -26,9 +84,30 @@
       "name": "Dictionaries",
       "open": true,
       "items": [
-        { "id": "dico-1", "name": "Dictionnaire Académie", "type": "link", "url": "https://www.dictionnaire-academie.fr/", "icon": "icons/Dico academie fr.png", "tags": "academie francaise dictionary" },
-        { "id": "dico-2", "name": "Merriam-Webster", "type": "link", "url": "https://www.merriam-webster.com/", "icon": "icons/merriam-webster150x150.png", "tags": "merriam webster english dictionary" },
-        { "id": "dico-3", "name": "DeepL", "type": "link", "url": "https://www.deepl.com/en/translator", "icon": "icons/deepL.png", "tags": "deepl translate language" }
+        {
+          "id": "dico-1",
+          "name": "Dictionnaire Académie",
+          "type": "link",
+          "url": "https://www.dictionnaire-academie.fr/",
+          "icon": "icons/Dico academie fr.png",
+          "tags": "academie francaise dictionary"
+        },
+        {
+          "id": "dico-2",
+          "name": "Merriam-Webster",
+          "type": "link",
+          "url": "https://www.merriam-webster.com/",
+          "icon": "icons/merriam-webster150x150.png",
+          "tags": "merriam webster english dictionary"
+        },
+        {
+          "id": "dico-3",
+          "name": "DeepL",
+          "type": "link",
+          "url": "https://www.deepl.com/en/translator",
+          "icon": "icons/deepL.png",
+          "tags": "deepl translate language"
+        }
       ]
     },
     {
@@ -36,10 +115,40 @@
       "name": "Online Stores",
       "open": true,
       "items": [
-        { "id": "stores-1", "name": "Amazon.be", "type": "link", "url": "https://www.amazon.com.be/?language=fr_BE", "icon": "icons/Amazon-150x150.png", "tags": "amazon belgium shop" },
-        { "id": "stores-2", "name": "Thomann", "type": "link", "url": "https://www.thomann.de/be/index.html", "icon": "icons/Thomann.png", "tags": "thomann music instruments" },
-        { "id": "stores-3", "name": "Play Store", "type": "app", "package": "com.android.vending", "fallbackUrl": "https://play.google.com/store", "icon": "icons/google-play-store-app.jpg", "tags": "play store android apps" },
-        { "id": "stores-4", "name": "F-Droid", "type": "app", "package": "org.fdroid.fdroid", "fallbackUrl": "https://f-droid.org", "icon": "icons/f-droid_logo.png", "tags": "fdroid open source apps" }
+        {
+          "id": "stores-1",
+          "name": "Amazon.be",
+          "type": "link",
+          "url": "https://www.amazon.com.be/?language=fr_BE",
+          "icon": "icons/Amazon-150x150.png",
+          "tags": "amazon belgium shop"
+        },
+        {
+          "id": "stores-2",
+          "name": "Thomann",
+          "type": "link",
+          "url": "https://www.thomann.de/be/index.html",
+          "icon": "icons/Thomann.png",
+          "tags": "thomann music instruments"
+        },
+        {
+          "id": "stores-3",
+          "name": "Play Store",
+          "type": "app",
+          "package": "com.android.vending",
+          "fallbackUrl": "https://play.google.com/store",
+          "icon": "icons/google-play-store-app.jpg",
+          "tags": "play store android apps"
+        },
+        {
+          "id": "stores-4",
+          "name": "F-Droid",
+          "type": "app",
+          "package": "org.fdroid.fdroid",
+          "fallbackUrl": "https://f-droid.org",
+          "icon": "icons/f-droid_logo.png",
+          "tags": "fdroid open source apps"
+        }
       ]
     },
     {
@@ -47,9 +156,30 @@
       "name": "Search & AI",
       "open": true,
       "items": [
-        { "id": "ai-1", "name": "Gemini", "type": "link", "url": "https://gemini.google.com/", "icon": "icons/Gemini_language_model_logo.png", "tags": "gemini google ai" },
-        { "id": "ai-2", "name": "ChatGPT", "type": "link", "url": "https://chatgpt.com/", "icon": "icons/ChatGPT.png", "tags": "chatgpt openai" },
-        { "id": "ai-3", "name": "Copilot", "type": "link", "url": "https://copilot.microsoft.com/", "icon": "icons/copilot-logo_0.png", "tags": "copilot microsoft ai" }
+        {
+          "id": "ai-1",
+          "name": "Gemini",
+          "type": "link",
+          "url": "https://gemini.google.com/",
+          "icon": "icons/Gemini_language_model_logo.png",
+          "tags": "gemini google ai"
+        },
+        {
+          "id": "ai-2",
+          "name": "ChatGPT",
+          "type": "link",
+          "url": "https://chatgpt.com/",
+          "icon": "icons/ChatGPT.png",
+          "tags": "chatgpt openai"
+        },
+        {
+          "id": "ai-3",
+          "name": "Copilot",
+          "type": "link",
+          "url": "https://copilot.microsoft.com/",
+          "icon": "icons/copilot-logo_0.png",
+          "tags": "copilot microsoft ai"
+        }
       ]
     },
     {
@@ -57,13 +187,62 @@
       "name": "Useful Links",
       "open": true,
       "items": [
-        { "id": "useful-1", "name": "Santander", "type": "link", "url": "https://secure.santanderconsumerbank.be/mdib-santander/session", "icon": "icons/santander-bank-logo-rounded-square-icon-free-png.webp", "tags": "santander banking login" },
-        { "id": "useful-2", "name": "Belgian Train", "type": "link", "url": "https://www.belgiantrain.be/en", "icon": "icons/SNCB_logo.svg.png", "tags": "belgian train sncb" },
-        { "id": "useful-3", "name": "Namecheap", "type": "link", "url": "https://ap.www.namecheap.com/domains/domaincontrolpanel/randdom.org/domain", "icon": "icons/namecheap.png", "tags": "namecheap domain" },
-        { "id": "useful-4", "name": "Immich", "type": "link", "url": "http://immich.randdom.org/", "icon": "icons/immich-logo.png", "tags": "immich photos server" },
-        { "id": "useful-5", "name": "Recettes", "type": "link", "url": "http://recettes.randdom.org/", "icon": "icons/Kitchenowl.png", "tags": "recipes cooking" },
-        { "id": "useful-6", "name": "Music", "type": "link", "url": "http://music.randdom.org/", "icon": "icons/navidrome.webp", "tags": "music server" },
-        { "id": "useful-7", "name": "Payscap", "type": "link", "url": "http://payscap.randdom.org/", "icon": "icons/payscap.jpg", "tags": "payscap dashboard" }
+        {
+          "id": "useful-1",
+          "name": "Santander",
+          "type": "link",
+          "url": "https://secure.santanderconsumerbank.be/mdib-santander/session",
+          "icon": "icons/santander-bank-logo-rounded-square-icon-free-png.webp",
+          "tags": "santander banking login"
+        },
+        {
+          "id": "useful-2",
+          "name": "Belgian Train",
+          "type": "link",
+          "url": "https://www.belgiantrain.be/en",
+          "icon": "icons/SNCB_logo.svg.png",
+          "tags": "belgian train sncb"
+        },
+        {
+          "id": "useful-3",
+          "name": "Namecheap",
+          "type": "link",
+          "url": "https://ap.www.namecheap.com/domains/domaincontrolpanel/randdom.org/domain",
+          "icon": "icons/namecheap.png",
+          "tags": "namecheap domain"
+        },
+        {
+          "id": "useful-4",
+          "name": "Immich",
+          "type": "link",
+          "url": "http://immich.randdom.org/",
+          "icon": "icons/immich-logo.png",
+          "tags": "immich photos server"
+        },
+        {
+          "id": "useful-5",
+          "name": "Recettes",
+          "type": "link",
+          "url": "http://recettes.randdom.org/",
+          "icon": "icons/Kitchenowl.png",
+          "tags": "recipes cooking"
+        },
+        {
+          "id": "useful-6",
+          "name": "Music",
+          "type": "link",
+          "url": "http://music.randdom.org/",
+          "icon": "icons/navidrome.webp",
+          "tags": "music server"
+        },
+        {
+          "id": "useful-7",
+          "name": "Payscap",
+          "type": "link",
+          "url": "http://payscap.randdom.org/",
+          "icon": "icons/payscap.jpg",
+          "tags": "payscap dashboard"
+        }
       ]
     },
     {
@@ -71,23 +250,42 @@
       "name": "Apps",
       "open": true,
       "items": [
-        { "id": "apps-1", "name": "LinkedIn", "type": "app", "package": "com.linkedin.android", "fallbackUrl": "https://play.google.com/store/apps/details?id=com.linkedin.android", "icon": "icons/Linkedin.png", "tags": "linkedin social jobs" },
-        { "id": "apps-2", "name": "Spotify", "type": "app", "package": "com.spotify.music", "fallbackUrl": "https://play.google.com/store/apps/details?id=com.spotify.music", "icon": "icons/spotify.webp", "tags": "spotify music streaming" },
-        { "id": "apps-3", "name": "WhatsApp", "type": "app", "package": "com.whatsapp", "fallbackUrl": "https://play.google.com/store/apps/details?id=com.whatsapp", "icon": "icons/Whatsapp.jpg", "tags": "whatsapp chat messages" },
-        { "id": "apps-4", "name": "Easy Banking", "type": "app", "package": "com.bnpp.easybanking", "fallbackUrl": "https://play.google.com/store/apps/details?id=com.bnpp.easybanking", "icon": "icons/fortis.webp", "tags": "easy banking finance app" }
-      ]
-    },
-    {
-      "id": "music",
-      "name": "Music",
-      "open": true,
-      "items": [
-        { "id": "id-mtyg87gxceci7", "name": "Tuner", "type": "app", "package": "org.billthefarmer.tuner", "fallbackUrl": "https://f-droid.org/packages/org.billthefarmer.tuner", "icon": "icons/id-mtyg87gxceci7.png", "tags": "tuner instrument" },
-        { "id": "music-2", "name": "Ultimate Guitar", "type": "app", "package": "com.ultimateguitar.tabs", "fallbackUrl": "https://play.google.com/store/apps/details?id=com.ultimateguitar.tabs", "icon": "icons/ultimate-guitar.png", "tags": "guitar tabs chords" },
-        { "id": "music-3", "name": "Voice Recorder", "type": "app", "package": "com.sec.android.app.voicenote", "fallbackUrl": "https://apps.samsung.com/appquery/appDetail.as?appId=com.sec.android.app.voicenote&cId=000008893904", "icon": "", "tags": "samsung voice recorder" },
-        { "id": "music-4", "name": "BOSS Waza-Air Editor", "type": "app", "package": "jp.co.roland.boss_waza_air_editor", "fallbackUrl": "https://play.google.com/store/apps/details?id=jp.co.roland.boss_waza_air_editor", "icon": "icons/boss-waza-air.png", "tags": "boss waza air guitar" },
-        { "id": "music-5", "name": "Fender Tone", "type": "app", "package": "com.fender.tone", "fallbackUrl": "https://play.google.com/store/apps/details?id=com.fender.tone", "icon": "icons/fender-tone.png", "tags": "fender tone guitar amp" },
-        { "id": "music-6", "name": "BandLab", "type": "app", "package": "com.bandlab.bandlab", "fallbackUrl": "https://play.google.com/store/apps/details?id=com.bandlab.bandlab", "icon": "icons/bandlab.png", "tags": "bandlab recording daw" }
+        {
+          "id": "apps-1",
+          "name": "LinkedIn",
+          "type": "app",
+          "package": "com.linkedin.android",
+          "fallbackUrl": "https://play.google.com/store/apps/details?id=com.linkedin.android",
+          "icon": "icons/Linkedin.png",
+          "tags": "linkedin social jobs"
+        },
+        {
+          "id": "apps-2",
+          "name": "Spotify",
+          "type": "app",
+          "package": "com.spotify.music",
+          "fallbackUrl": "https://play.google.com/store/apps/details?id=com.spotify.music",
+          "icon": "icons/spotify.webp",
+          "tags": "spotify music streaming"
+        },
+        {
+          "id": "apps-3",
+          "name": "WhatsApp",
+          "type": "app",
+          "package": "com.whatsapp",
+          "fallbackUrl": "https://play.google.com/store/apps/details?id=com.whatsapp",
+          "icon": "icons/Whatsapp.jpg",
+          "tags": "whatsapp chat messages"
+        },
+        {
+          "id": "apps-4",
+          "name": "Easy Banking",
+          "type": "app",
+          "package": "com.bnpp.easybanking",
+          "fallbackUrl": "https://play.google.com/store/apps/details?id=com.bnpp.easybanking",
+          "icon": "icons/fortis.webp",
+          "tags": "easy banking finance app"
+        }
       ]
     }
   ]
