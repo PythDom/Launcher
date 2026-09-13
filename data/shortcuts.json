@@ -49,7 +49,8 @@
       "items": [
         { "id": "ai-1", "name": "Gemini", "type": "link", "url": "https://gemini.google.com/", "icon": "icons/Gemini_language_model_logo.png", "tags": "gemini google ai" },
         { "id": "ai-2", "name": "ChatGPT", "type": "link", "url": "https://chatgpt.com/", "icon": "icons/ChatGPT.png", "tags": "chatgpt openai" },
-        { "id": "ai-3", "name": "Copilot", "type": "link", "url": "https://copilot.microsoft.com/", "icon": "icons/copilot-logo_0.png", "tags": "copilot microsoft ai" }
+        { "id": "ai-3", "name": "Copilot", "type": "link", "url": "https://copilot.microsoft.com/", "icon": "icons/copilot-logo_0.png", "tags": "copilot microsoft ai" },
+        { "id": "ai-4", "name": "Claude", "type": "app", "package": "com.anthropic.claude", "fallbackUrl": "market://details?id=com.anthropic.claude", "icon": "icons/claude.png", "tags": "claude anthropic ai" }
       ]
     },
     {
@@ -74,7 +75,8 @@
         { "id": "apps-1", "name": "LinkedIn", "type": "app", "package": "com.linkedin.android", "deepLink": "https://www.linkedin.com/", "fallbackUrl": "market://details?id=com.linkedin.android", "icon": "icons/Linkedin.png", "tags": "linkedin social jobs" },
         { "id": "apps-2", "name": "Spotify", "type": "app", "package": "com.spotify.music", "deepLink": "https://open.spotify.com", "fallbackUrl": "market://details?id=com.spotify.music", "icon": "icons/spotify.webp", "tags": "spotify music streaming" },
         { "id": "apps-3", "name": "WhatsApp", "type": "app", "package": "com.whatsapp", "deepLink": "https://wa.me/", "fallbackUrl": "market://details?id=com.whatsapp", "icon": "icons/Whatsapp.jpg", "tags": "whatsapp chat messages" },
-        { "id": "apps-4", "name": "Easy Banking", "type": "app", "package": "com.bnpp.easybanking", "fallbackUrl": "market://details?id=com.bnpp.easybanking", "icon": "icons/fortis.webp", "tags": "easy banking finance app" }
+        { "id": "apps-4", "name": "Easy Banking", "type": "app", "package": "com.bnpp.easybanking", "fallbackUrl": "market://details?id=com.bnpp.easybanking", "icon": "icons/fortis.webp", "tags": "easy banking finance app" },
+        { "id": "apps-5", "name": "Deezer", "type": "app", "package": "deezer.android.app", "fallbackUrl": "market://details?id=deezer.android.app", "icon": "icons/deezer.png", "tags": "deezer music streaming" }
       ]
     },
     {
