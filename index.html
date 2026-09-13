@@ -367,8 +367,16 @@ summary {
       <label>Package name
         <input id="f-package" type="text" placeholder="com.whatsapp">
       </label>
-      <label>Fallback URL (used if the app isn't installed — defaults to its Play Store page)
-        <input id="f-fallback" type="text" placeholder="https://play.google.com/store/apps/details?id=...">
+      <label>Deep link (optional — only if this app supports opening via a link, e.g. https://wa.me/)
+        <input id="f-deeplink" type="text" placeholder="Leave blank if unsure">
+      </label>
+      <p style="font-size:12px;color:var(--muted);margin:4px 0 0">
+        Android only lets a webpage open an app directly if the app itself registers a link for that —
+        most don't. Without a deep link above, this shortcut opens the app's store page instead
+        (still handy, just not a direct launch).
+      </p>
+      <label>Store page URL (used when there's no deep link, or it fails)
+        <input id="f-fallback" type="text" placeholder="market://details?id=...">
       </label>
     </div>
 
