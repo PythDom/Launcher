@@ -38,8 +38,8 @@
       "items": [
         { "id": "stores-1", "name": "Amazon.be", "type": "link", "url": "https://www.amazon.com.be/?language=fr_BE", "icon": "icons/Amazon-150x150.png", "tags": "amazon belgium shop" },
         { "id": "stores-2", "name": "Thomann", "type": "link", "url": "https://www.thomann.de/be/index.html", "icon": "icons/Thomann.png", "tags": "thomann music instruments" },
-        { "id": "stores-3", "name": "Play Store", "type": "app", "package": "com.android.vending", "fallbackUrl": "https://play.google.com/store", "icon": "icons/google-play-store-app.jpg", "tags": "play store android apps" },
-        { "id": "stores-4", "name": "F-Droid", "type": "app", "package": "org.fdroid.fdroid", "fallbackUrl": "https://f-droid.org", "icon": "icons/f-droid_logo.png", "tags": "fdroid open source apps" }
+        { "id": "stores-3", "name": "Play Store", "type": "app", "package": "com.android.vending", "deepLink": "market://", "fallbackUrl": "https://play.google.com/store", "icon": "icons/google-play-store-app.jpg", "tags": "play store android apps" },
+        { "id": "stores-4", "name": "F-Droid", "type": "app", "package": "org.fdroid.fdroid", "deepLink": "fdroid://", "fallbackUrl": "https://f-droid.org", "icon": "icons/f-droid_logo.png", "tags": "fdroid open source apps" }
       ]
     },
     {
@@ -71,10 +71,10 @@
       "name": "Apps",
       "open": true,
       "items": [
-        { "id": "apps-1", "name": "LinkedIn", "type": "app", "package": "com.linkedin.android", "fallbackUrl": "https://play.google.com/store/apps/details?id=com.linkedin.android", "icon": "icons/Linkedin.png", "tags": "linkedin social jobs" },
-        { "id": "apps-2", "name": "Spotify", "type": "app", "package": "com.spotify.music", "fallbackUrl": "https://play.google.com/store/apps/details?id=com.spotify.music", "icon": "icons/spotify.webp", "tags": "spotify music streaming" },
-        { "id": "apps-3", "name": "WhatsApp", "type": "app", "package": "com.whatsapp", "fallbackUrl": "https://play.google.com/store/apps/details?id=com.whatsapp", "icon": "icons/Whatsapp.jpg", "tags": "whatsapp chat messages" },
-        { "id": "apps-4", "name": "Easy Banking", "type": "app", "package": "com.bnpp.easybanking", "fallbackUrl": "https://play.google.com/store/apps/details?id=com.bnpp.easybanking", "icon": "icons/fortis.webp", "tags": "easy banking finance app" }
+        { "id": "apps-1", "name": "LinkedIn", "type": "app", "package": "com.linkedin.android", "deepLink": "https://www.linkedin.com/", "fallbackUrl": "market://details?id=com.linkedin.android", "icon": "icons/Linkedin.png", "tags": "linkedin social jobs" },
+        { "id": "apps-2", "name": "Spotify", "type": "app", "package": "com.spotify.music", "deepLink": "https://open.spotify.com", "fallbackUrl": "market://details?id=com.spotify.music", "icon": "icons/spotify.webp", "tags": "spotify music streaming" },
+        { "id": "apps-3", "name": "WhatsApp", "type": "app", "package": "com.whatsapp", "deepLink": "https://wa.me/", "fallbackUrl": "market://details?id=com.whatsapp", "icon": "icons/Whatsapp.jpg", "tags": "whatsapp chat messages" },
+        { "id": "apps-4", "name": "Easy Banking", "type": "app", "package": "com.bnpp.easybanking", "fallbackUrl": "market://details?id=com.bnpp.easybanking", "icon": "icons/fortis.webp", "tags": "easy banking finance app" }
       ]
     },
     {
@@ -83,11 +83,11 @@
       "open": true,
       "items": [
         { "id": "id-mtyg87gxceci7", "name": "Tuner", "type": "app", "package": "org.billthefarmer.tuner", "fallbackUrl": "https://f-droid.org/packages/org.billthefarmer.tuner", "icon": "icons/id-mtyg87gxceci7.png", "tags": "tuner instrument" },
-        { "id": "music-2", "name": "Ultimate Guitar", "type": "app", "package": "com.ultimateguitar.tabs", "fallbackUrl": "https://play.google.com/store/apps/details?id=com.ultimateguitar.tabs", "icon": "icons/ultimate-guitar.png", "tags": "guitar tabs chords" },
+        { "id": "music-2", "name": "Ultimate Guitar", "type": "app", "package": "com.ultimateguitar.tabs", "fallbackUrl": "market://details?id=com.ultimateguitar.tabs", "icon": "icons/ultimate-guitar.png", "tags": "guitar tabs chords" },
         { "id": "music-3", "name": "Voice Recorder", "type": "app", "package": "com.sec.android.app.voicenote", "fallbackUrl": "https://apps.samsung.com/appquery/appDetail.as?appId=com.sec.android.app.voicenote&cId=000008893904", "icon": "", "tags": "samsung voice recorder" },
-        { "id": "music-4", "name": "BOSS Waza-Air Editor", "type": "app", "package": "jp.co.roland.boss_waza_air_editor", "fallbackUrl": "https://play.google.com/store/apps/details?id=jp.co.roland.boss_waza_air_editor", "icon": "icons/boss-waza-air.png", "tags": "boss waza air guitar" },
-        { "id": "music-5", "name": "Fender Tone", "type": "app", "package": "com.fender.tone", "fallbackUrl": "https://play.google.com/store/apps/details?id=com.fender.tone", "icon": "icons/fender-tone.png", "tags": "fender tone guitar amp" },
-        { "id": "music-6", "name": "BandLab", "type": "app", "package": "com.bandlab.bandlab", "fallbackUrl": "https://play.google.com/store/apps/details?id=com.bandlab.bandlab", "icon": "icons/bandlab.png", "tags": "bandlab recording daw" }
+        { "id": "music-4", "name": "BOSS Waza-Air Editor", "type": "app", "package": "jp.co.roland.boss_waza_air_editor", "fallbackUrl": "market://details?id=jp.co.roland.boss_waza_air_editor", "icon": "icons/boss-waza-air.png", "tags": "boss waza air guitar" },
+        { "id": "music-5", "name": "Fender Tone", "type": "app", "package": "com.fender.tone", "fallbackUrl": "market://details?id=com.fender.tone", "icon": "icons/fender-tone.png", "tags": "fender tone guitar amp" },
+        { "id": "music-6", "name": "BandLab", "type": "app", "package": "com.bandlab.bandlab", "fallbackUrl": "market://details?id=com.bandlab.bandlab", "icon": "icons/bandlab.png", "tags": "bandlab recording daw" }
       ]
     }
   ]
