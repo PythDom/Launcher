@@ -19,57 +19,62 @@ const FALLBACK_DATA = { categories: [{ id: "start", name: "Get Started", open: t
 // phone (no browser exposes that, for privacy reasons) — this is a curated
 // list of common package names offered as a quick-pick shortcut instead of
 // manual typing. Anything not listed can still be entered by hand.
+// deepLink is only set where the app is confidently known to support a
+// browsable custom scheme or verified https App Link — that's the only
+// thing Android/Chrome will actually let a webpage hand off to the app
+// directly. Everything else opens that app's store page instead, which is
+// the honest, actually-achievable outcome for apps with no such deep link.
 const POPULAR_APPS = [
-    { name: "WhatsApp", package: "com.whatsapp" },
+    { name: "WhatsApp", package: "com.whatsapp", deepLink: "https://wa.me/" },
     { name: "Messenger", package: "com.facebook.orca" },
-    { name: "Instagram", package: "com.instagram.android" },
-    { name: "Facebook", package: "com.facebook.katana" },
-    { name: "Telegram", package: "org.telegram.messenger" },
+    { name: "Instagram", package: "com.instagram.android", deepLink: "https://www.instagram.com/" },
+    { name: "Facebook", package: "com.facebook.katana", deepLink: "https://www.facebook.com/" },
+    { name: "Telegram", package: "org.telegram.messenger", deepLink: "https://t.me/" },
     { name: "Signal", package: "org.thoughtcrime.securesms" },
     { name: "Snapchat", package: "com.snapchat.android" },
-    { name: "Twitter / X", package: "com.twitter.android" },
-    { name: "Discord", package: "com.discord" },
-    { name: "TikTok", package: "com.zhiliaoapp.musically" },
-    { name: "LinkedIn", package: "com.linkedin.android" },
+    { name: "Twitter / X", package: "com.twitter.android", deepLink: "https://twitter.com/" },
+    { name: "Discord", package: "com.discord", deepLink: "https://discord.com/app" },
+    { name: "TikTok", package: "com.zhiliaoapp.musically", deepLink: "https://www.tiktok.com/" },
+    { name: "LinkedIn", package: "com.linkedin.android", deepLink: "https://www.linkedin.com/" },
     { name: "Slack", package: "com.Slack" },
     { name: "Microsoft Teams", package: "com.microsoft.teams" },
     { name: "Viber", package: "com.viber.voip" },
     { name: "Skype", package: "com.skype.raider" },
     { name: "Gmail", package: "com.google.android.gm" },
-    { name: "Google Maps", package: "com.google.android.apps.maps" },
-    { name: "Google Photos", package: "com.google.android.apps.photos" },
-    { name: "Google Drive", package: "com.google.android.apps.docs" },
-    { name: "YouTube", package: "com.google.android.youtube" },
-    { name: "YouTube Music", package: "com.google.android.apps.youtube.music" },
+    { name: "Google Maps", package: "com.google.android.apps.maps", deepLink: "https://maps.google.com/" },
+    { name: "Google Photos", package: "com.google.android.apps.photos", deepLink: "https://photos.google.com/" },
+    { name: "Google Drive", package: "com.google.android.apps.docs", deepLink: "https://drive.google.com/" },
+    { name: "YouTube", package: "com.google.android.youtube", deepLink: "https://www.youtube.com/" },
+    { name: "YouTube Music", package: "com.google.android.apps.youtube.music", deepLink: "https://music.youtube.com/" },
     { name: "Chrome", package: "com.android.chrome" },
-    { name: "Google Calendar", package: "com.google.android.calendar" },
-    { name: "Google Keep", package: "com.google.android.keep" },
+    { name: "Google Calendar", package: "com.google.android.calendar", deepLink: "https://calendar.google.com/" },
+    { name: "Google Keep", package: "com.google.android.keep", deepLink: "https://keep.google.com/" },
     { name: "Google Authenticator", package: "com.google.android.apps.authenticator2" },
-    { name: "Spotify", package: "com.spotify.music" },
-    { name: "Netflix", package: "com.netflix.mediaclient" },
+    { name: "Spotify", package: "com.spotify.music", deepLink: "https://open.spotify.com" },
+    { name: "Netflix", package: "com.netflix.mediaclient", deepLink: "https://www.netflix.com/" },
     { name: "Disney+", package: "com.disney.disneyplus" },
     { name: "Amazon Prime Video", package: "com.amazon.avod.thirdpartyclient" },
     { name: "VLC", package: "org.videolan.vlc" },
     { name: "Audible", package: "com.audible.application" },
     { name: "Kindle", package: "com.amazon.kindle" },
-    { name: "PayPal", package: "com.paypal.android.p2pmobile" },
+    { name: "PayPal", package: "com.paypal.android.p2pmobile", deepLink: "https://www.paypal.com/" },
     { name: "Revolut", package: "com.revolut.revolut" },
     { name: "N26", package: "de.number26.android" },
     { name: "Wise", package: "com.transferwise.android" },
-    { name: "Amazon Shopping", package: "com.amazon.mShop.android.shopping" },
-    { name: "eBay", package: "com.ebay.mobile" },
+    { name: "Amazon Shopping", package: "com.amazon.mShop.android.shopping", deepLink: "https://www.amazon.com/" },
+    { name: "eBay", package: "com.ebay.mobile", deepLink: "https://www.ebay.com/" },
     { name: "Uber", package: "com.ubercab" },
     { name: "Bolt", package: "ee.mtakso.client" },
     { name: "Waze", package: "com.waze" },
-    { name: "Booking.com", package: "com.booking" },
-    { name: "Airbnb", package: "com.airbnb.android" },
+    { name: "Booking.com", package: "com.booking", deepLink: "https://www.booking.com/" },
+    { name: "Airbnb", package: "com.airbnb.android", deepLink: "https://www.airbnb.com/" },
     { name: "Microsoft Outlook", package: "com.microsoft.office.outlook" },
     { name: "Zoom", package: "us.zoom.videomeetings" },
     { name: "Notion", package: "notion.id" },
     { name: "Todoist", package: "com.todoist" },
     { name: "Duolingo", package: "com.duolingo" },
-    { name: "Google Play Store", package: "com.android.vending" },
-    { name: "F-Droid", package: "org.fdroid.fdroid" }
+    { name: "Google Play Store", package: "com.android.vending", deepLink: "market://" },
+    { name: "F-Droid", package: "org.fdroid.fdroid", deepLink: "fdroid://" }
 ];
 
 let shortcutsData = null;
@@ -171,10 +176,17 @@ function fileToIconDataURL(file, maxDim) {
 
 function computeHref(item) {
     if (item.type === "app") {
-        const pkg = item.package || "";
-        const fallback = item.fallbackUrl || ("https://play.google.com/store/apps/details?id=" + pkg);
-        return "intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package="
-            + pkg + ";S.browser_fallback_url=" + encodeURIComponent(fallback) + ";end";
+        // Android Chrome only ever hands a web link off to an app that has
+        // itself registered a "browsable" deep link (its own URI scheme, or
+        // a verified https App Link) — there is no way for a web page to
+        // launch an arbitrary app's generic launcher icon; that's a
+        // deliberate security restriction, not something fixable client-side.
+        // So: use a known-working deep link when we have one; otherwise the
+        // honest, actually-achievable behavior is to go straight to the
+        // app's store page.
+        if (item.deepLink) return item.deepLink;
+        if (item.fallbackUrl) return item.fallbackUrl;
+        return item.package ? ("market://details?id=" + item.package) : "#";
     }
     return item.url || "#";
 }
@@ -370,10 +382,11 @@ function renderAppPickerResults(query) {
     matches.forEach((a) => {
         const row = document.createElement("div");
         row.className = "picker-item";
-        row.textContent = a.name + " — " + a.package;
+        row.textContent = a.name + " — " + a.package + (a.deepLink ? "  ✓ opens app directly" : "  (store page only)");
         row.onclick = () => {
             document.getElementById("f-package").value = a.package;
             document.getElementById("f-package").dispatchEvent(new Event("input"));
+            document.getElementById("f-deeplink").value = a.deepLink || "";
             if (!document.getElementById("f-name").value.trim()) {
                 document.getElementById("f-name").value = a.name;
             }
@@ -416,6 +429,7 @@ function openItemModal(catId, itemId) {
     document.getElementById("f-url").value = item && item.type === "link" ? (item.url || "") : "";
     document.getElementById("f-package").value = item && item.type === "app" ? (item.package || "") : "";
     document.getElementById("f-fallback").value = item && item.type === "app" ? (item.fallbackUrl || "") : "";
+    document.getElementById("f-deeplink").value = item && item.type === "app" ? (item.deepLink || "") : "";
     document.getElementById("f-icon-url").value = item && item.icon && !item.icon.startsWith("data:") ? item.icon : "";
     updateIconPreview(item ? item.icon : "");
 
@@ -460,7 +474,9 @@ async function saveItemFromModal() {
         if (!pkg) { alert("Package name is required for an app shortcut."); return; }
         item.package = pkg;
         item.fallbackUrl = document.getElementById("f-fallback").value.trim()
-            || ("https://play.google.com/store/apps/details?id=" + pkg);
+            || ("market://details?id=" + pkg);
+        const deepLink = document.getElementById("f-deeplink").value.trim();
+        if (deepLink) item.deepLink = deepLink;
     } else {
         const url = document.getElementById("f-url").value.trim();
         if (!url) { alert("URL is required."); return; }
@@ -742,7 +758,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("f-package").addEventListener("input", (e) => {
         const fb = document.getElementById("f-fallback");
         if (!fb.dataset.userEdited) {
-            fb.value = e.target.value.trim() ? ("https://play.google.com/store/apps/details?id=" + e.target.value.trim()) : "";
+            fb.value = e.target.value.trim() ? ("market://details?id=" + e.target.value.trim()) : "";
         }
     });
     document.getElementById("f-fallback").addEventListener("input", (e) => { e.target.dataset.userEdited = "1"; });
