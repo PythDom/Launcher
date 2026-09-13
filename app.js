@@ -169,20 +169,6 @@ function fileToIconDataURL(file, maxDim) {
 
 // ---------- href computation ----------
 
-function navigateTo(href) {
-    // Android's Chrome (including installed PWAs/WebAPKs) only reliably
-    // hands an intent:// URL off to the OS when it comes from a real <a>
-    // element being clicked — a script-driven location.href assignment is
-    // often silently ignored for intent:// (regular http(s) links work
-    // fine either way, but app shortcuts need the real-anchor path).
-    const a = document.createElement("a");
-    a.href = href;
-    a.style.display = "none";
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => a.remove(), 1000);
-}
-
 function computeHref(item) {
     if (item.type === "app") {
         const pkg = item.package || "";
@@ -272,29 +258,34 @@ function render() {
 }
 
 function renderItem(catId, item) {
-    const div = document.createElement("div");
-    div.className = "item" + (editMode ? " editing" : "");
-    div.setAttribute("data-search", ((item.name || "") + " " + (item.tags || "")).toLowerCase());
+    // A real, static <a href="..."> is used here deliberately (not a
+    // JS-driven navigation) because Android Chrome / installed WebAPKs only
+    // reliably hand an intent:// URL off to the OS when a genuine anchor
+    // element is what the user actually tapped.
+    const a = document.createElement("a");
+    a.className = "item" + (editMode ? " editing" : "");
+    a.href = computeHref(item);
+    a.setAttribute("data-search", ((item.name || "") + " " + (item.tags || "")).toLowerCase());
 
     const img = document.createElement("img");
     img.src = resolveIconSrc(item.icon, item.name);
     img.loading = "lazy";
     img.onerror = () => { img.src = placeholderIcon(item.name); };
-    div.appendChild(img);
+    a.appendChild(img);
 
     const label = document.createElement("div");
     label.className = "item-label";
     label.textContent = item.name;
-    div.appendChild(label);
+    a.appendChild(label);
 
-    div.onclick = () => {
+    a.addEventListener("click", (e) => {
         if (editMode) {
+            e.preventDefault();
             openItemModal(catId, item.id);
-        } else {
-            navigateTo(computeHref(item));
         }
-    };
-    return div;
+        // else: let the browser follow the real href natively.
+    });
+    return a;
 }
 
 function applySearch() {
