@@ -377,20 +377,12 @@
       "open": true,
       "items": [
         {
-          "id": "id-mu4l73tx9uqrw",
-          "name": "Yathzee Scores",
+          "id": "id-mu4lb27pwu49q",
+          "name": "Molkky Score",
           "type": "link",
-          "tags": "yathzee scores",
-          "url": "192.169.129.34:7050",
-          "icon": "icons/id-mu4l73tx9uqrw.png"
-        },
-        {
-          "id": "id-mu4l7oicb1m5l",
-          "name": "Molkky Scores",
-          "type": "link",
-          "tags": "molkky scores",
-          "url": "192.168.129.34:7475",
-          "icon": "icons/id-mu4l7oicb1m5l.png"
+          "tags": "molkky score",
+          "url": "http://192.168.129.34:7050",
+          "icon": "icons/id-mu4lb27pwu49q.png"
         }
       ]
     }
