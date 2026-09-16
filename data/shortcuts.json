@@ -375,7 +375,16 @@
       "id": "id-mu4l2vluubezj",
       "name": "Games",
       "open": true,
-      "items": []
+      "items": [
+        {
+          "id": "id-mu4l73tx9uqrw",
+          "name": "Yathzee Scores",
+          "type": "link",
+          "tags": "yathzee scores",
+          "url": "192.169.129.34:7050",
+          "icon": "icons/id-mu4l73tx9uqrw.png"
+        }
+      ]
     }
   ]
 }
