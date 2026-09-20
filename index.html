@@ -77,10 +77,11 @@ header {
 }
 
 .status-dot {
-    width: 10px;
-    height: 10px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
     flex-shrink: 0;
+    cursor: pointer;
 }
 .status-synced { background: #34a853; }
 .status-dirty { background: #f9ab00; }
@@ -104,6 +105,26 @@ header {
     border: 1px solid var(--border);
     background: var(--tile-bg);
     color: var(--text);
+}
+
+.sync-banner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: #fff3cd;
+    color: #664d03;
+    font-size: 13px;
+}
+.sync-banner button {
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,0.2);
+    background: white;
+    color: #664d03;
+    white-space: nowrap;
 }
 
 details {
@@ -314,10 +335,15 @@ summary {
 <body>
 
 <header>
-<div id="statusDot" class="status-dot status-offline" title="Loading…"></div>
+<div id="statusDot" class="status-dot status-offline" title="Loading… (tap for Settings)"></div>
 <input id="search" placeholder="Search shortcuts...">
 <button id="editToggle">✏️ Edit</button>
 </header>
+
+<div id="syncBanner" class="sync-banner hidden">
+  <span id="syncBannerText"></span>
+  <span id="syncBannerActions"></span>
+</div>
 
 <div id="toolbar">
 <button id="btnAddCategory">+ Category</button>
