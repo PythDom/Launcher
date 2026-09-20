@@ -101,6 +101,22 @@ async function loadData() {
         // offline and not yet cached — fine, fall through
     }
 
+    // Record what sha this device's copy actually corresponds to, so a
+    // later sync can tell whether the repo changed elsewhere in the
+    // meantime (a different device, or a hand-edit) before blindly
+    // overwriting it. Works without a token since the repo is public.
+    if (!(draft && draft.dirty)) {
+        try {
+            const shaRes = await fetch("https://api.github.com/repos/" + GITHUB_OWNER + "/" + GITHUB_REPO + "/contents/" + DATA_PATH, { cache: "no-store" });
+            if (shaRes.ok) {
+                const info = await shaRes.json();
+                localStorage.setItem(SHA_KEY, info.sha);
+            }
+        } catch (e) {
+            // best-effort only
+        }
+    }
+
     if (draft && draft.dirty) {
         // Unsynced local edits take priority over whatever is on GitHub.
         return draft.data;
@@ -610,7 +626,9 @@ async function uploadPendingIcons() {
     }
 }
 
-async function syncToGitHub(silent) {
+let conflictPending = false;
+
+async function syncToGitHub(silent, forceOverwrite) {
     if (!isDirty()) return;
     if (location.hostname !== PRODUCTION_HOST) {
         console.warn("Sync to GitHub skipped: not running on " + PRODUCTION_HOST + " (host is " + location.hostname + ").");
@@ -622,6 +640,7 @@ async function syncToGitHub(silent) {
     }
     if (!getToken()) {
         if (!silent) { toast("No GitHub token saved yet — opening Settings."); openSettingsModal(); }
+        updateSyncBanner();
         return;
     }
     if (syncing) return;
@@ -636,24 +655,50 @@ async function syncToGitHub(silent) {
         await uploadPendingIcons();
         const current = await ghGetFile(DATA_PATH);
         const sha = current ? current.sha : undefined;
+        const baselineSha = localStorage.getItem(SHA_KEY);
+
+        // If this device's known baseline no longer matches what's actually
+        // on GitHub, something else (another device, a manual edit) changed
+        // it in the meantime. Overwriting blindly here is exactly how edits
+        // were silently getting lost — so pause and let the user choose,
+        // unless they've explicitly said to overwrite anyway.
+        if (!forceOverwrite && baselineSha && sha && baselineSha !== sha) {
+            conflictPending = true;
+            syncing = false;
+            updateStatus();
+            if (!silent) toast("Shortcuts changed elsewhere — review before saving.");
+            return;
+        }
+
         const content = base64EncodeUnicode(JSON.stringify(shortcutsData, null, 2));
         const result = await ghPutFile(DATA_PATH, content, "Update shortcuts from device", sha);
         lastKnownSha = result.content.sha;
         localStorage.setItem(SHA_KEY, lastKnownSha);
+        conflictPending = false;
         saveDraft(false);
         toast("Synced to GitHub ✓");
     } catch (err) {
         console.error(err);
         toast("Sync failed — will retry. (" + err.message + ")");
+        scheduleAutoSync(30000);
     } finally {
         syncing = false;
         updateStatus();
     }
 }
 
-function scheduleAutoSync() {
+async function reloadFromRemoteDiscardingLocal() {
+    localStorage.removeItem(DRAFT_KEY);
+    conflictPending = false;
+    shortcutsData = await loadData();
+    render();
+    updateStatus();
+    toast("Reloaded the latest version from GitHub.");
+}
+
+function scheduleAutoSync(delayMs) {
     clearTimeout(syncTimer);
-    syncTimer = setTimeout(() => syncToGitHub(true), 4000);
+    syncTimer = setTimeout(() => syncToGitHub(true), delayMs || 4000);
 }
 
 function updateStatus(forceState) {
@@ -672,6 +717,33 @@ function updateStatus(forceState) {
         "offline": "Offline",
         "offline-dirty": "Offline — changes saved on this device, will sync when back online"
     }[state] || "";
+    updateSyncBanner();
+}
+
+function updateSyncBanner() {
+    const banner = document.getElementById("syncBanner");
+    if (!banner) return;
+    const textEl = document.getElementById("syncBannerText");
+    const actionsEl = document.getElementById("syncBannerActions");
+
+    if (conflictPending) {
+        textEl.textContent = "The shortcuts changed elsewhere since this device last checked — syncing now would overwrite that change.";
+        actionsEl.innerHTML = '<button id="btnReloadLatest">Reload latest</button><button id="btnOverwriteAnyway">Keep my changes</button>';
+        banner.classList.remove("hidden");
+        document.getElementById("btnReloadLatest").onclick = reloadFromRemoteDiscardingLocal;
+        document.getElementById("btnOverwriteAnyway").onclick = () => syncToGitHub(false, true);
+        return;
+    }
+
+    if (isDirty() && !getToken()) {
+        textEl.textContent = "Changes on this device aren't backed up anywhere yet.";
+        actionsEl.innerHTML = '<button id="btnOpenSettingsFromBanner">Add GitHub token</button>';
+        banner.classList.remove("hidden");
+        document.getElementById("btnOpenSettingsFromBanner").onclick = openSettingsModal;
+        return;
+    }
+
+    banner.classList.add("hidden");
 }
 
 function openSettingsModal() {
@@ -734,6 +806,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     document.getElementById("search").addEventListener("input", applySearch);
     document.getElementById("editToggle").addEventListener("click", () => setEditMode(!editMode));
+    document.getElementById("statusDot").addEventListener("click", openSettingsModal);
 
     document.getElementById("btnAddCategory").addEventListener("click", addCategoryPrompt);
     document.getElementById("btnSyncNow").addEventListener("click", () => syncToGitHub(false));
