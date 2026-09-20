@@ -36,6 +36,14 @@
           "url": "https://www.rtbf.be/sport/direct/football/pro-league/resultats",
           "icon": "icons/RTBF - Scores.png",
           "tags": "football pro league results"
+        },
+        {
+          "id": "id-mu9mljpfshiav",
+          "name": "ConflictTestItem4",
+          "type": "link",
+          "tags": "conflicttestitem4",
+          "url": "https://example.com/conflict-test-4",
+          "icon": ""
         }
       ]
     },
