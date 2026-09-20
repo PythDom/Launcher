@@ -255,7 +255,7 @@
           "name": "Payscap",
           "type": "link",
           "tags": "payscap",
-          "url": "http://payscap.randdom.org/",
+          "url": "http://payscap.randdom.org",
           "icon": "icons/payscap.jpg"
         }
       ]
