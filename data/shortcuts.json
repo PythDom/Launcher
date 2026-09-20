@@ -110,49 +110,6 @@
       ]
     },
     {
-      "id": "stores",
-      "name": "Online Stores",
-      "open": true,
-      "items": [
-        {
-          "id": "stores-1",
-          "name": "Amazon.be",
-          "type": "link",
-          "url": "https://www.amazon.com.be/?language=fr_BE",
-          "icon": "icons/Amazon-150x150.png",
-          "tags": "amazon belgium shop"
-        },
-        {
-          "id": "stores-2",
-          "name": "Thomann",
-          "type": "link",
-          "url": "https://www.thomann.de/be/index.html",
-          "icon": "icons/Thomann.png",
-          "tags": "thomann music instruments"
-        },
-        {
-          "id": "stores-3",
-          "name": "Play Store",
-          "type": "app",
-          "package": "com.android.vending",
-          "deepLink": "market://",
-          "fallbackUrl": "https://play.google.com/store",
-          "icon": "icons/google-play-store-app.jpg",
-          "tags": "play store android apps"
-        },
-        {
-          "id": "stores-4",
-          "name": "F-Droid",
-          "type": "app",
-          "package": "org.fdroid.fdroid",
-          "deepLink": "fdroid://",
-          "fallbackUrl": "https://f-droid.org",
-          "icon": "icons/f-droid_logo.png",
-          "tags": "fdroid open source apps"
-        }
-      ]
-    },
-    {
       "id": "ai",
       "name": "Search & AI",
       "open": true,
@@ -189,81 +146,6 @@
           "fallbackUrl": "market://details?id=com.anthropic.claude",
           "icon": "icons/claude.png",
           "tags": "claude anthropic ai"
-        }
-      ]
-    },
-    {
-      "id": "useful",
-      "name": "Useful Links",
-      "open": true,
-      "items": [
-        {
-          "id": "useful-1",
-          "name": "Santander",
-          "type": "link",
-          "url": "https://secure.santanderconsumerbank.be/mdib-santander/session",
-          "icon": "icons/santander-bank-logo-rounded-square-icon-free-png.webp",
-          "tags": "santander banking login"
-        },
-        {
-          "id": "useful-2",
-          "name": "Belgian Train",
-          "type": "link",
-          "url": "https://www.belgiantrain.be/en",
-          "icon": "icons/SNCB_logo.svg.png",
-          "tags": "belgian train sncb"
-        },
-        {
-          "id": "useful-3",
-          "name": "Namecheap",
-          "type": "link",
-          "url": "https://ap.www.namecheap.com/domains/domaincontrolpanel/randdom.org/domain",
-          "icon": "icons/namecheap.png",
-          "tags": "namecheap domain"
-        },
-        {
-          "id": "useful-4",
-          "name": "Immich",
-          "type": "link",
-          "url": "http://immich.randdom.org/",
-          "icon": "icons/immich-logo.png",
-          "tags": "immich photos server"
-        }
-      ]
-    },
-    {
-      "id": "apps",
-      "name": "Apps",
-      "open": true,
-      "items": [
-        {
-          "id": "apps-1",
-          "name": "LinkedIn",
-          "type": "app",
-          "package": "com.linkedin.android",
-          "deepLink": "https://www.linkedin.com/",
-          "fallbackUrl": "market://details?id=com.linkedin.android",
-          "icon": "icons/Linkedin.png",
-          "tags": "linkedin social jobs"
-        },
-        {
-          "id": "apps-3",
-          "name": "WhatsApp",
-          "type": "app",
-          "package": "com.whatsapp",
-          "deepLink": "https://wa.me/",
-          "fallbackUrl": "market://details?id=com.whatsapp",
-          "icon": "icons/Whatsapp.jpg",
-          "tags": "whatsapp chat messages"
-        },
-        {
-          "id": "apps-4",
-          "name": "Easy Banking",
-          "type": "app",
-          "package": "com.bnpp.easybanking",
-          "fallbackUrl": "market://details?id=com.bnpp.easybanking",
-          "icon": "icons/fortis.webp",
-          "tags": "easy banking finance app"
         }
       ]
     },
@@ -375,6 +257,124 @@
           "tags": "payscap",
           "url": "http://payscap.randdom.org/",
           "icon": "icons/payscap.jpg"
+        }
+      ]
+    },
+    {
+      "id": "useful",
+      "name": "Useful Links",
+      "open": true,
+      "items": [
+        {
+          "id": "useful-1",
+          "name": "Santander",
+          "type": "link",
+          "url": "https://secure.santanderconsumerbank.be/mdib-santander/session",
+          "icon": "icons/santander-bank-logo-rounded-square-icon-free-png.webp",
+          "tags": "santander banking login"
+        },
+        {
+          "id": "useful-2",
+          "name": "Belgian Train",
+          "type": "link",
+          "url": "https://www.belgiantrain.be/en",
+          "icon": "icons/SNCB_logo.svg.png",
+          "tags": "belgian train sncb"
+        },
+        {
+          "id": "useful-3",
+          "name": "Namecheap",
+          "type": "link",
+          "url": "https://ap.www.namecheap.com/domains/domaincontrolpanel/randdom.org/domain",
+          "icon": "icons/namecheap.png",
+          "tags": "namecheap domain"
+        },
+        {
+          "id": "useful-4",
+          "name": "Immich",
+          "type": "link",
+          "url": "http://immich.randdom.org/",
+          "icon": "icons/immich-logo.png",
+          "tags": "immich photos server"
+        }
+      ]
+    },
+    {
+      "id": "stores",
+      "name": "Online Stores",
+      "open": true,
+      "items": [
+        {
+          "id": "stores-1",
+          "name": "Amazon.be",
+          "type": "link",
+          "url": "https://www.amazon.com.be/?language=fr_BE",
+          "icon": "icons/Amazon-150x150.png",
+          "tags": "amazon belgium shop"
+        },
+        {
+          "id": "stores-2",
+          "name": "Thomann",
+          "type": "link",
+          "url": "https://www.thomann.de/be/index.html",
+          "icon": "icons/Thomann.png",
+          "tags": "thomann music instruments"
+        },
+        {
+          "id": "stores-3",
+          "name": "Play Store",
+          "type": "app",
+          "package": "com.android.vending",
+          "deepLink": "market://",
+          "fallbackUrl": "https://play.google.com/store",
+          "icon": "icons/google-play-store-app.jpg",
+          "tags": "play store android apps"
+        },
+        {
+          "id": "stores-4",
+          "name": "F-Droid",
+          "type": "app",
+          "package": "org.fdroid.fdroid",
+          "deepLink": "fdroid://",
+          "fallbackUrl": "https://f-droid.org",
+          "icon": "icons/f-droid_logo.png",
+          "tags": "fdroid open source apps"
+        }
+      ]
+    },
+    {
+      "id": "apps",
+      "name": "Apps",
+      "open": true,
+      "items": [
+        {
+          "id": "apps-1",
+          "name": "LinkedIn",
+          "type": "app",
+          "package": "com.linkedin.android",
+          "deepLink": "https://www.linkedin.com/",
+          "fallbackUrl": "market://details?id=com.linkedin.android",
+          "icon": "icons/Linkedin.png",
+          "tags": "linkedin social jobs"
+        },
+        {
+          "id": "apps-3",
+          "name": "WhatsApp",
+          "type": "app",
+          "package": "com.whatsapp",
+          "deepLink": "https://wa.me/",
+          "fallbackUrl": "market://details?id=com.whatsapp",
+          "icon": "icons/Whatsapp.jpg",
+          "tags": "whatsapp chat messages"
+        },
+        {
+          "id": "apps-4",
+          "name": "Easy Banking",
+          "type": "app",
+          "package": "com.bnpp.easybanking",
+          "fallbackUrl": "market://details?id=com.bnpp.easybanking",
+          "icon": "icons/fortis.webp",
+          "tags": "easy banking finance app"
         }
       ]
     }
