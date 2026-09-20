@@ -644,7 +644,12 @@ async function syncToGitHub(silent, forceOverwrite) {
         return;
     }
     if (syncing) return;
-    if (Date.now() - lastSyncAt < MIN_SYNC_INTERVAL_MS) {
+    // Rate-limiting exists purely to defend against a runaway automatic
+    // loop (see the toggle-sync-loop incident) — it must never silently
+    // swallow an explicit, deliberate user action like "Sync now" or
+    // "Keep my changes" on a conflict, or those buttons would appear to do
+    // nothing with zero feedback.
+    if (silent && Date.now() - lastSyncAt < MIN_SYNC_INTERVAL_MS) {
         console.warn("Sync rate-limited — too soon since last sync.");
         return;
     }
