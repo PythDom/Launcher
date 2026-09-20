@@ -228,22 +228,6 @@
           "url": "http://immich.randdom.org/",
           "icon": "icons/immich-logo.png",
           "tags": "immich photos server"
-        },
-        {
-          "id": "useful-5",
-          "name": "Recettes",
-          "type": "link",
-          "url": "http://recettes.randdom.org/",
-          "icon": "icons/Kitchenowl.png",
-          "tags": "recipes cooking"
-        },
-        {
-          "id": "useful-6",
-          "name": "Music",
-          "type": "link",
-          "url": "http://music.randdom.org/",
-          "icon": "icons/navidrome.webp",
-          "tags": "music server"
         }
       ]
     },
@@ -263,16 +247,6 @@
           "tags": "linkedin social jobs"
         },
         {
-          "id": "apps-2",
-          "name": "Spotify",
-          "type": "app",
-          "package": "com.spotify.music",
-          "deepLink": "https://open.spotify.com",
-          "fallbackUrl": "market://details?id=com.spotify.music",
-          "icon": "icons/spotify.webp",
-          "tags": "spotify music streaming"
-        },
-        {
           "id": "apps-3",
           "name": "WhatsApp",
           "type": "app",
@@ -290,15 +264,6 @@
           "fallbackUrl": "market://details?id=com.bnpp.easybanking",
           "icon": "icons/fortis.webp",
           "tags": "easy banking finance app"
-        },
-        {
-          "id": "apps-5",
-          "name": "Deezer",
-          "type": "app",
-          "package": "deezer.android.app",
-          "fallbackUrl": "market://details?id=deezer.android.app",
-          "icon": "icons/deezer.png",
-          "tags": "deezer music streaming"
         }
       ]
     },
@@ -360,6 +325,25 @@
           "fallbackUrl": "market://details?id=com.bandlab.bandlab",
           "icon": "icons/bandlab.png",
           "tags": "bandlab recording daw"
+        },
+        {
+          "id": "apps-5",
+          "name": "Deezer",
+          "type": "app",
+          "tags": "deezer",
+          "package": "deezer.android.app",
+          "fallbackUrl": "market://details?id=deezer.android.app",
+          "icon": "icons/deezer.png"
+        },
+        {
+          "id": "apps-2",
+          "name": "Spotify",
+          "type": "app",
+          "tags": "spotify",
+          "package": "com.spotify.music",
+          "fallbackUrl": "market://details?id=com.spotify.music",
+          "deepLink": "https://open.spotify.com",
+          "icon": "icons/spotify.webp"
         }
       ]
     },
