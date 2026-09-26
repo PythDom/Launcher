@@ -375,6 +375,14 @@
           "fallbackUrl": "market://details?id=com.bnpp.easybanking",
           "icon": "icons/fortis.webp",
           "tags": "easy banking finance app"
+        },
+        {
+          "id": "id-muinls2atxoh4",
+          "name": "Syndic",
+          "type": "link",
+          "tags": "syndic",
+          "url": "192.168.129.34:7500",
+          "icon": "icons/id-muinls2atxoh4.png"
         }
       ]
     }
