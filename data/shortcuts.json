@@ -377,12 +377,12 @@
           "tags": "easy banking finance app"
         },
         {
-          "id": "id-muinls2atxoh4",
+          "id": "id-muinohml8d7ta",
           "name": "Syndic",
           "type": "link",
           "tags": "syndic",
-          "url": "192.168.129.34:7500",
-          "icon": "icons/id-muinls2atxoh4.png"
+          "url": "http://192.168.129.34:7500",
+          "icon": "icons/id-muinohml8d7ta.png"
         }
       ]
     }
