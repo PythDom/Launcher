@@ -383,6 +383,14 @@
           "tags": "syndic",
           "url": "http://192.168.129.34:7500",
           "icon": "icons/id-muinohml8d7ta.png"
+        },
+        {
+          "id": "id-mur8t3i1h8unt",
+          "name": "Pharmacie",
+          "type": "link",
+          "tags": "pharmacie",
+          "url": "https://pythdom.github.io/Pharmacie/",
+          "icon": "icons/id-mur8t3i1h8unt.png"
         }
       ]
     }
