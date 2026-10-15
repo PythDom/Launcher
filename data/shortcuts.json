@@ -75,6 +75,15 @@
           "tags": "streamscore",
           "url": "https://pythdom.github.io/streamscore",
           "icon": "icons/id-mu059gtwaya5y.png"
+        },
+        {
+          "id": "id-mva0bn4wyxm5l",
+          "name": "StreamScore",
+          "type": "app",
+          "tags": "streamscore",
+          "package": "io.github.pythdom.streamscore",
+          "fallbackUrl": "market://details?id=io.github.pythdom.streamscore",
+          "icon": ""
         }
       ]
     },
