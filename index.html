@@ -66,6 +66,34 @@ header {
     color: var(--text);
 }
 
+#btnAllApps {
+    padding: 8px 12px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--tile-bg);
+    color: var(--text);
+}
+
+.apps-list { max-height: 60vh; overflow-y: auto; margin-top: 8px; }
+.app-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 2px;
+    border-bottom: 1px solid var(--border);
+}
+.app-row img { width: 40px; height: 40px; border-radius: 9px; background: white; }
+.app-row .app-name { flex: 1; font-size: 15px; }
+.app-row button {
+    padding: 6px 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--tile-bg);
+    color: var(--text);
+}
+
 #editToggle {
     padding: 10px 14px;
     font-size: 15px;
@@ -337,6 +365,7 @@ summary {
 <header>
 <div id="statusDot" class="status-dot status-offline" title="Loading… (tap for Settings)"></div>
 <input id="search" placeholder="Search shortcuts...">
+<button id="btnAllApps" class="hidden" title="All installed apps">📱</button>
 <button id="editToggle">✏️ Edit</button>
 </header>
 
@@ -418,6 +447,17 @@ summary {
       <button id="f-delete" class="btn-danger">Delete</button>
       <button id="f-cancel">Cancel</button>
       <button id="f-save" class="btn-primary">Save</button>
+    </div>
+  </div>
+</div>
+
+<div id="appsModal" class="modal-overlay">
+  <div class="modal">
+    <h3>All apps</h3>
+    <input id="apps-search" type="text" placeholder="Search installed apps…" autocomplete="off">
+    <div id="apps-list" class="apps-list"></div>
+    <div class="modal-buttons">
+      <button id="apps-close">Close</button>
     </div>
   </div>
 </div>

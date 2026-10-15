@@ -159,9 +159,110 @@ function placeholderIcon(name) {
     return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
 }
 
-function resolveIconSrc(icon, name) {
-    if (!icon) return placeholderIcon(name);
-    return icon;
+function resolveIconSrc(icon, name, pkg) {
+    if (icon) return icon;
+    return nativeIcon(pkg) || placeholderIcon(name);
+}
+
+// ---------- native Android launcher bridge ----------
+// window.AndroidLauncher only exists inside the Launcher APK (a thin WebView
+// shell). In a normal browser/PWA every helper below quietly does nothing.
+
+function hasNative() {
+    return typeof window.AndroidLauncher !== "undefined";
+}
+
+const nativeIconCache = {};
+function nativeIcon(pkg) {
+    if (!hasNative() || !pkg) return "";
+    if (!(pkg in nativeIconCache)) {
+        try { nativeIconCache[pkg] = window.AndroidLauncher.appIcon(pkg) || ""; }
+        catch (e) { nativeIconCache[pkg] = ""; }
+    }
+    return nativeIconCache[pkg];
+}
+
+let installedApps = null;
+function getInstalledApps(force) {
+    if (!hasNative()) return [];
+    if (!installedApps || force) {
+        try { installedApps = JSON.parse(window.AndroidLauncher.listApps()); }
+        catch (e) { installedApps = []; }
+    }
+    return installedApps;
+}
+
+function launchApp(item) {
+    try {
+        if (item.package && window.AndroidLauncher.launch(item.package)) return;
+    } catch (e) { /* fall through to the store link */ }
+    const url = item.fallbackUrl || item.deepLink || (item.package ? "market://details?id=" + item.package : "");
+    if (url) window.AndroidLauncher.openUrl(url);
+}
+
+function refreshNativeUi() {
+    const native = hasNative();
+    document.getElementById("btnAllApps").classList.toggle("hidden", !native);
+    // Blob downloads don't work inside a WebView; GitHub sync is the backup there.
+    document.getElementById("btnExport").classList.toggle("hidden", native);
+}
+
+window.__launcherBack = function () {
+    const open = document.querySelector(".modal-overlay.open");
+    if (!open) return false;
+    open.classList.remove("open");
+    return true;
+};
+
+function openAllApps() {
+    getInstalledApps(true);
+    document.getElementById("apps-search").value = "";
+    renderAllApps();
+    document.getElementById("appsModal").classList.add("open");
+}
+
+function renderAllApps() {
+    const list = document.getElementById("apps-list");
+    const q = document.getElementById("apps-search").value.toLowerCase().trim();
+    list.innerHTML = "";
+    const matches = getInstalledApps().filter((a) =>
+        !q || a.label.toLowerCase().includes(q) || a.package.toLowerCase().includes(q));
+    matches.slice(0, 60).forEach((a) => {
+        const row = document.createElement("div");
+        row.className = "app-row";
+        const img = document.createElement("img");
+        img.src = nativeIcon(a.package) || placeholderIcon(a.label);
+        const name = document.createElement("div");
+        name.className = "app-name";
+        name.textContent = a.label;
+        const add = document.createElement("button");
+        add.textContent = "+";
+        add.title = "Add as shortcut";
+        img.onclick = name.onclick = () => window.AndroidLauncher.launch(a.package);
+        add.onclick = () => addInstalledAppAsShortcut(a);
+        row.appendChild(img);
+        row.appendChild(name);
+        row.appendChild(add);
+        list.appendChild(row);
+    });
+    if (matches.length > 60) {
+        const more = document.createElement("div");
+        more.className = "picker-empty";
+        more.textContent = (matches.length - 60) + " more — type to narrow the list.";
+        list.appendChild(more);
+    }
+}
+
+function addInstalledAppAsShortcut(a) {
+    document.getElementById("appsModal").classList.remove("open");
+    if (!shortcutsData.categories.length) { toast("Create a category first (Edit → + Category)."); return; }
+    openItemModal(shortcutsData.categories[0].id, null);
+    document.getElementById("f-type").value = "app";
+    setTypeFieldsVisibility("app");
+    document.getElementById("f-name").value = a.label;
+    document.getElementById("f-package").value = a.package;
+    document.getElementById("f-package").dispatchEvent(new Event("input"));
+    updateIconPreview("");
 }
 
 function fileToIconDataURL(file, maxDim) {
@@ -210,6 +311,7 @@ function computeHref(item) {
 // ---------- rendering ----------
 
 function render() {
+    refreshNativeUi();
     const container = document.getElementById("categories");
     container.innerHTML = "";
 
@@ -290,13 +392,14 @@ function renderItem(catId, item) {
     // JS-driven navigation) because Android Chrome / installed WebAPKs only
     // reliably hand an intent:// URL off to the OS when a genuine anchor
     // element is what the user actually tapped.
+    const native = hasNative() && item.type === "app" && !!item.package;
     const a = document.createElement("a");
     a.className = "item" + (editMode ? " editing" : "");
-    a.href = computeHref(item);
+    a.href = native ? "#" : computeHref(item);
     a.setAttribute("data-search", ((item.name || "") + " " + (item.tags || "")).toLowerCase());
 
     const img = document.createElement("img");
-    img.src = resolveIconSrc(item.icon, item.name);
+    img.src = resolveIconSrc(item.icon, item.name, item.package);
     img.loading = "lazy";
     img.onerror = () => { img.src = placeholderIcon(item.name); };
     a.appendChild(img);
@@ -310,6 +413,11 @@ function renderItem(catId, item) {
         if (editMode) {
             e.preventDefault();
             openItemModal(catId, item.id);
+            return;
+        }
+        if (native) {
+            e.preventDefault();
+            launchApp(item);
         }
         // else: let the browser follow the real href natively.
     });
@@ -390,15 +498,25 @@ function renderAppPickerResults(query) {
     const box = document.getElementById("f-app-picker-results");
     const q = query.trim().toLowerCase();
     if (!q) { box.innerHTML = ""; box.classList.remove("show"); return; }
-    const matches = POPULAR_APPS.filter((a) =>
+    let pool = POPULAR_APPS.map((a) => ({ name: a.name, package: a.package, deepLink: a.deepLink, installed: false }));
+    if (hasNative()) {
+        // Real installed apps first, then the curated list for apps not installed yet.
+        const inst = getInstalledApps().map((a) => ({ name: a.label, package: a.package, installed: true }));
+        const seen = new Set(inst.map((a) => a.package));
+        pool = inst.concat(pool.filter((a) => !seen.has(a.package)));
+    }
+    const matches = pool.filter((a) =>
         a.name.toLowerCase().includes(q) || a.package.toLowerCase().includes(q)
-    ).slice(0, 8);
+    ).slice(0, 10);
     if (!matches.length) { box.innerHTML = '<div class="picker-empty">No match — type the package name manually below.</div>'; box.classList.add("show"); return; }
     box.innerHTML = "";
     matches.forEach((a) => {
         const row = document.createElement("div");
         row.className = "picker-item";
-        row.textContent = a.name + " — " + a.package + (a.deepLink ? "  ✓ opens app directly" : "  (store page only)");
+        const tag = hasNative()
+            ? (a.installed ? "  ✓ installed" : "  (not installed — opens store)")
+            : (a.deepLink ? "  ✓ opens app directly" : "  (store page only)");
+        row.textContent = a.name + " — " + a.package + tag;
         row.onclick = () => {
             document.getElementById("f-package").value = a.package;
             document.getElementById("f-package").dispatchEvent(new Event("input"));
@@ -406,6 +524,7 @@ function renderAppPickerResults(query) {
             if (!document.getElementById("f-name").value.trim()) {
                 document.getElementById("f-name").value = a.name;
             }
+            updateIconPreview(document.getElementById("f-icon-url").value.trim());
             document.getElementById("f-app-picker").value = "";
             box.innerHTML = "";
             box.classList.remove("show");
@@ -460,7 +579,9 @@ function closeItemModal() {
 
 function updateIconPreview(src) {
     const img = document.getElementById("f-icon-preview");
-    img.src = src || placeholderIcon(document.getElementById("f-name").value);
+    img.src = src
+        || nativeIcon(document.getElementById("f-package").value.trim())
+        || placeholderIcon(document.getElementById("f-name").value);
 }
 
 async function saveItemFromModal() {
@@ -866,6 +987,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("f-delete").addEventListener("click", deleteItemFromModal);
     document.getElementById("itemModal").addEventListener("click", (e) => {
         if (e.target.id === "itemModal") closeItemModal();
+    });
+
+    document.getElementById("btnAllApps").addEventListener("click", openAllApps);
+    document.getElementById("apps-search").addEventListener("input", renderAllApps);
+    document.getElementById("apps-close").addEventListener("click", () => document.getElementById("appsModal").classList.remove("open"));
+    document.getElementById("appsModal").addEventListener("click", (e) => {
+        if (e.target.id === "appsModal") e.target.classList.remove("open");
     });
 
     document.getElementById("btnTestConnection").addEventListener("click", testConnection);
